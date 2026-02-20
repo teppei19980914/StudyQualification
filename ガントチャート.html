@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習計画 ガントチャート 2026–2027</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: 'Meiryo UI', 'Meiryo', 'Yu Gothic UI', sans-serif;
+  background: #eef1f4;
+  margin: 0;
+  padding: 24px;
+  color: #2c3e50;
+}
+h1 { font-size: 1.3em; margin: 0 0 4px; }
+.sub { font-size: 0.82em; color: #7f8c8d; margin-bottom: 20px; }
+.wrap { overflow-x: auto; }
+
+table {
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  min-width: 1000px;
+  width: 100%;
+  table-layout: fixed;
+}
+td { font-size: 0.75em; padding: 0; vertical-align: middle; }
+
+/* Year header */
+.rYr td { height: 22px; background: #2c3e50; color: #fff; font-weight: bold; text-align: center; border-right: 1px solid #3d5166; }
+.rYr .lbl { background: #1a252f; text-align: right; padding-right: 8px; }
+
+/* Month header */
+.rMo td { height: 30px; text-align: center; border-right: 1px solid #ddd; border-bottom: 3px solid #2c3e50; font-weight: bold; font-size: 0.73em; }
+.rMo .lbl { background: #f4f6f7; color: #888; text-align: right; padding-right: 8px; border-right: 2px solid #aaa; font-weight: normal; font-size: 0.7em; }
+.mo07 { background: #d4e6f1; color: #154360; }
+.mo14 { background: #fef9e7; color: #7d6608; }
+.moNow { background: #d5f5e3; color: #0e6655; outline: 2px solid #1abc9c; outline-offset: -2px; }
+
+/* Activity row */
+.rAct td { height: 20px; text-align: center; border-right: 1px solid #eee; border-bottom: 2px solid #bbb; font-size: 0.65em; font-weight: bold; }
+.rAct .lbl { background: #f4f6f7; color: #888; text-align: right; padding-right: 8px; border-right: 2px solid #aaa; font-size: 0.68em; }
+.ac07 { background: #d4e6f1; color: #1a5276; }
+.ac14 { background: #fef9e7; color: #9a7d0a; }
+
+/* Section */
+.rSec td { height: 26px; background: #ecf0f1; font-weight: bold; font-size: 0.78em; border-bottom: 1px solid #ccc; color: #2c3e50; }
+.rSec .lbl { padding-left: 10px; border-right: 2px solid #aaa; }
+.rSec .grid { border-right: 1px solid #ddd; }
+
+/* Task */
+.rTask td { height: 32px; border-bottom: 1px solid #eee; }
+.rTask .lbl { padding: 0 6px 0 20px; color: #555; background: #fafafa; border-right: 2px solid #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.72em; }
+.rTask .bar-td { padding: 0; }
+.bar {
+  margin: 6px 2px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 6px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.62em;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0.92;
+  transition: opacity .15s, filter .15s;
+}
+.bar[data-id] { cursor: pointer; }
+.bar[data-id]:hover { opacity: 1; filter: brightness(1.1); }
+
+/* Milestone */
+.rMs td { height: 32px; border-bottom: 1px solid #eee; }
+.rMs .lbl { padding-left: 20px; color: #444; background: #fafafa; border-right: 2px solid #ccc; font-size: 0.72em; font-weight: bold; white-space: nowrap; }
+.ms-td { text-align: center; }
+.ms-mark { font-size: 1.3em; line-height: 32px; transition: transform .15s; display: inline-block; }
+.ms-mark[data-id] { cursor: pointer; }
+.ms-mark[data-id]:hover { transform: scale(1.25); }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 0.8em; background: white; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 6px rgba(0,0,0,.08); }
+.legend h3 { width: 100%; margin: 0 0 6px; font-size: 0.9em; color: #555; }
+.li { display: flex; align-items: center; gap: 5px; }
+.lb { width: 18px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.note { margin-top: 14px; font-size: 0.78em; color: #7f8c8d; background: white; border-radius: 8px; padding: 10px 16px; box-shadow: 0 1px 6px rgba(0,0,0,.06); line-height: 1.7; }
+.note strong { color: #555; }
+
+/* ── Modal ──────────────────────────────────────────────── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.3);
+  width: 90%;
+  max-width: 580px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalIn .18s ease-out;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.95) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1)  translateY(0); }
+}
+.modal-head {
+  padding: 14px 18px;
+  border-left: 5px solid #999;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e8e8e8;
+  flex-shrink: 0;
+}
+.modal-head h2 { font-size: 0.95em; margin: 0; color: #2c3e50; line-height: 1.5; }
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0 0 0 12px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color .12s;
+}
+.modal-close:hover { color: #e74c3c; }
+.modal-body { padding: 16px 20px; overflow-y: auto; }
+.modal-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.meta-tag { font-size: 0.74em; padding: 3px 9px; border-radius: 12px; background: #ecf0f1; color: #555; }
+.meta-07 { background: #d4e6f1; color: #154360; }
+.meta-14 { background: #fef9e7; color: #7d6608; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+.detail-table th {
+  width: 130px;
+  text-align: left;
+  padding: 7px 10px;
+  background: #f4f6f7;
+  color: #555;
+  font-weight: bold;
+  border: 1px solid #e2e5e7;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.detail-table td {
+  padding: 7px 10px;
+  border: 1px solid #e2e5e7;
+  color: #333;
+  line-height: 1.6;
+  vertical-align: top;
+}
+.detail-table tr:nth-child(odd) td { background: #fdfdfd; }
+.detail-table tr:nth-child(even) td { background: #f9fafb; }
+.modal-note {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fefae0;
+  border-left: 3px solid #f1c40f;
+  font-size: 0.78em;
+  color: #6d5a00;
+  border-radius: 0 4px 4px 0;
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<h1>学習計画 ガントチャート（2026年2月〜2027年10月）</h1>
+<p class="sub">クラウド・セキュリティ特化 プロジェクトマネージャへの道　／　バーまたは ◆ をクリックすると詳細を表示</p>
+<div class="wrap"><div id="chart"></div></div>
+<div class="legend" id="legend"></div>
+<div class="note" id="note"></div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head" id="modal-head">
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" id="modal-close" title="閉じる">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── 月定義（0〜20 = Feb2026〜Oct2027）─────────────────────────
+
+const NOW_IDX = 0;
+const MONTHS = [
+  {y:'2026',m:'2月', act:0.7},{y:'2026',m:'3月', act:0.7},
+  {y:'2026',m:'4月', act:0.7},{y:'2026',m:'5月', act:0.7},
+  {y:'2026',m:'6月', act:1.4},{y:'2026',m:'7月', act:1.4},
+  {y:'2026',m:'8月', act:1.4},{y:'2026',m:'9月', act:1.4},
+  {y:'2026',m:'10月',act:1.4},{y:'2026',m:'11月',act:1.4},
+  {y:'2026',m:'12月',act:0.7},{y:'2027',m:'1月', act:0.7},
+  {y:'2027',m:'2月', act:0.7},{y:'2027',m:'3月', act:0.7},
+  {y:'2027',m:'4月', act:0.7},{y:'2027',m:'5月', act:0.7},
+  {y:'2027',m:'6月', act:1.4},{y:'2027',m:'7月', act:1.4},
+  {y:'2027',m:'8月', act:1.4},{y:'2027',m:'9月', act:1.4},
+  {y:'2027',m:'10月',act:1.4},
+];
+const N = MONTHS.length;
+
+// ── タスク・マイルストーン定義 ─────────────────────────────────
+// t:'sec'=セクション見出し / 'task'=バー / 'ms'=マイルストーン（◆）
+// detail.items: [[ラベル, 値のHTML], ...]
+
+const ROWS = [
+
+  // ════════════════════════════════════════════════
+  // Python
+  // ════════════════════════════════════════════════
+  {t:'sec', lbl:'Python 3 エンジニア認定実践試験'},
+
+  {t:'task', id:'py1', lbl:'Python実践試験 直前対策', s:0, e:0, c:'#27ae60',
+   detail:{
+     phase:'Python試験 最終追い込み', period:'2026年2月', act:'0.7',
+     items:[
+       ['メイン',    'Python実践試験 直前対策（過去問・模擬試験）'],
+       ['サブ',      'SC・Azure学習計画の策定（テキスト選定・スケジュール確定）'],
+       ['確認事項',  '応用情報合格年月 → <strong>SC午前I免除</strong> の可否を確認'],
+     ]
+   }},
+
+  {t:'ms', id:'py-ms', lbl:'★ Python試験 受験（3月）', col:1, c:'#1e8449',
+   detail:{
+     phase:'Python試験 受験・切り替え', period:'2026年3月', act:'0.7',
+     items:[
+       ['試験',   '<strong>Python 3 エンジニア認定実践試験 受験</strong>'],
+       ['SC',     '試験制度・出題範囲・過去問の全体構造を把握（テキスト1周読み）'],
+       ['Azure',  'AZ-104の学習ロードマップ確認・Microsoft Learnで概要把握'],
+       ['成果物', 'SC分野マップ（暗号・認証・ネットワーク・法令 等）の自作'],
+     ]
+   }},
+
+  // ════════════════════════════════════════════════
+  // SC
+  // ════════════════════════════════════════════════
+  {t:'sec', lbl:'情報処理安全確保支援士（SC）　※応用情報合格 → 午前I免除を要確認'},
+
+  {t:'task', id:'sc1', lbl:'SC 全体把握・テキスト選定・学習計画確定', s:1, e:1, c:'#cb4335',
+   detail:{
+     phase:'切り替え・仕込み', period:'2026年3月', act:'0.7',
+     items:[
+       ['全体把握', '試験制度・出題範囲・過去問の全体構造をテキスト1周で把握'],
+       ['成果物',   'SC分野マップ（暗号・認証・ネットワーク・インシデント・法令）の自作'],
+     ]
+   }},
+
+  {t:'task', id:'sc2', lbl:'SC 午前II 基礎固め（暗号/PKI/認証/リスク/法令）', s:2, e:3, c:'#e74c3c',
+   detail:{
+     phase:'SC午前II基礎固め①②', period:'2026年4〜5月', act:'0.7',
+     items:[
+       ['4月：暗号',    '共通鍵・公開鍵・ハッシュ・PKI・デジタル署名'],
+       ['4月：認証',    '多要素認証・生体認証・SSO'],
+       ['4月：目標',    '午前II過去問（直近1年分）→ 正答率 <strong>50%以上</strong>'],
+       ['5月：管理',    'セキュリティ管理・リスクアセスメント・ISMS'],
+       ['5月：法令',    '不正アクセス禁止法・個人情報保護法・NISC等'],
+       ['5月：目標',    '午前II過去問（直近2年分）→ 正答率 <strong>60%以上</strong>'],
+       ['5月：AZ-104', '軽量インプット：Azureの管理階層・リソースグループの整理'],
+     ]
+   }},
+
+  {t:'task', id:'sc3', lbl:'SC 午後I 演習（過去問5年分・解答フレーム習得）', s:4, e:6, c:'#c0392b',
+   detail:{
+     phase:'SC集中①（午後I演習）', period:'2026年6〜8月', act:'1.4',
+     items:[
+       ['6月',          '午後I過去問：<strong>1問/週</strong> 精読（問題パターン把握）'],
+       ['7月',          '午後I過去問：<strong>2問/週</strong>（解答時間を意識して演習）'],
+       ['8月：午前II',  '過去問5年分を通し演習 → 正答率 <strong>75%以上</strong> 維持'],
+       ['8月：午後I',   '過去問5年分（システム監査・ネットワーク・マルウェア対策 等）'],
+       ['8月：フレーム','解答フレーム習得（「〜リスクに対し〜を実施する」型）'],
+       ['週目標',       '<strong>14〜18h</strong>'],
+     ]
+   }},
+
+  {t:'task', id:'sc4', lbl:'SC 午後II 論述対策・直前総復習', s:7, e:8, c:'#a93226',
+   detail:{
+     phase:'SC集中②（午後II・直前）→ 本番', period:'2026年9〜10月', act:'1.4',
+     items:[
+       ['9月：午後II',   '過去問3年分を精読・解答・自己採点'],
+       ['9月：論述',     '論述テンプレート作成（セキュリティ設計・インシデント対応 等）'],
+       ['9月：模擬',     '通し模擬試験1回（午前II〜午後II）→ 時間配分を確認'],
+       ['9月：直前',     '直前チェックリスト作成・苦手分野の最終確認'],
+       ['10月：本番',    '<strong>SC 秋期試験 受験（10月第3日曜）</strong>'],
+       ['10月：試験後',  'AZ-500の学習計画策定・テキスト選定開始'],
+     ],
+     note:'試験前2週はラストスパート。試験後は必ず休養を取ること。'
+   }},
+
+  {t:'ms', id:'sc-ms', lbl:'★ SC 秋期試験 受験（10月）', col:8, c:'#922b21',
+   detail:{
+     phase:'SC本番 ★最重要', period:'2026年10月（第3日曜）', act:'1.4',
+     items:[
+       ['試験形式',  '午前I（免除可）/ 午前II / 午後I / 午後II'],
+       ['合格基準',  '各区分60点以上（午後IIは評価A以上）'],
+       ['結果発表',  '12月下旬（IPA Webサイト）'],
+       ['試験後',    'AZ-500学習計画策定・テキスト選定 / 休養優先'],
+     ],
+     note:'応用情報合格後2年以内であれば午前I免除。合格年月を必ず確認して申請すること。'
+   }},
+
+  // ════════════════════════════════════════════════
+  // AZ-104
+  // ════════════════════════════════════════════════
+  {t:'sec', lbl:'Azure AZ-104（Azure Administrator）'},
+
+  {t:'task', id:'az104-1', lbl:'AZ-104 概要把握（Microsoft Learn / 業務知識整理）', s:3, e:3, c:'#5dade2',
+   detail:{
+     phase:'AZ-104 軽量準備', period:'2026年5月', act:'0.7',
+     items:[
+       ['内容',    'AZ-104の学習ロードマップ確認（Microsoft Learn）'],
+       ['内容',    'Azureの管理階層・リソースグループ・サブスクリプション整理'],
+       ['ポイント','<strong>業務で触れているAzure知識を整理</strong>（AZ-900取得済みを活用）'],
+     ]
+   }},
+
+  {t:'task', id:'az104-2', lbl:'AZ-104 集中学習（VNet / RBAC / Monitor / Backup）', s:4, e:5, c:'#2980b9',
+   detail:{
+     phase:'AZ-104集中①②→ 受験', period:'2026年6〜7月', act:'1.4',
+     items:[
+       ['6月：ID管理',   'Entra ID（旧AAD）・RBAC・管理グループ・サブスクリプション設計'],
+       ['6月：NW',       '仮想ネットワーク（VNet・NSG・VPN Gateway・ExpressRoute）'],
+       ['6月：ハンズオン','Azure Portalで実際に構築・操作（業務知識と紐付け）'],
+       ['7月：ストレージ','ストレージアカウント・Azure Backup・Azure Monitor・Log Analytics'],
+       ['7月：VM',       'App Service・Azure VM・Load Balancer'],
+       ['7月：受験',     '模擬試験2回 → 弱点補強 → <strong>AZ-104 受験・合格</strong>'],
+       ['週目標',        '<strong>14〜18h</strong>'],
+     ]
+   }},
+
+  {t:'ms', id:'az104-ms', lbl:'★ AZ-104 受験（7月）', col:5, c:'#1a6fa0',
+   detail:{
+     phase:'AZ-104 受験', period:'2026年7月', act:'1.4',
+     items:[
+       ['前提',       'AZ-900取得済み（Azureの基礎知識あり）'],
+       ['出題形式',   '選択・ドラッグ＆ドロップ・事例問題等（英語または日本語）'],
+       ['合格基準',   '700点以上（1000点満点）'],
+       ['次のステップ','AZ-500（Azure Security Engineer）へ進む'],
+     ]
+   }},
+
+  // ════════════════════════════════════════════════
+  // AZ-500
+  // ════════════════════════════════════════════════
+  {t:'sec', lbl:'Azure AZ-500（Azure Security Engineer）'},
+
+  {t:'task', id:'az500-1', lbl:'AZ-500 基礎（Entra ID / Defender / Key Vault）', s:9, e:9, c:'#1f618d',
+   detail:{
+     phase:'AZ-500 基礎固め', period:'2026年11月', act:'1.4',
+     items:[
+       ['Entra ID',   'PIM・Identity Protection・条件付きアクセス'],
+       ['Key Vault',  'シークレット・証明書管理・アクセスポリシー'],
+       ['Defender',   'Microsoft Defender for Cloud の概要と設定'],
+       ['Policy',     'Azure Policy・コンプライアンス管理・ポリシー定義'],
+       ['成果物',     '権限設計図・セキュリティポリシー設計例'],
+       ['週目標',     '<strong>14〜18h</strong>'],
+     ]
+   }},
+
+  {t:'task', id:'az500-2', lbl:'AZ-500 軽量維持（復習・模擬問題演習）', s:10, e:15, c:'#2471a3',
+   detail:{
+     phase:'整理・棚卸し / AZ-500維持', period:'2026年12月〜2027年5月', act:'0.7',
+     items:[
+       ['12月',    'SC試験結果確認（12月下旬発表）・弱点分野の整理'],
+       ['12〜2月', 'AZ-500軽量継続（Microsoft Learn・暗記カード）週4〜5h'],
+       ['12〜2月', '職務経歴書更新（AZ-104・SC取得内容を反映）'],
+       ['3〜5月',  'AZ-500過去問・模擬試験（軽量演習）週4〜5h'],
+       ['3〜5月',  'SC-200（Microsoft Sentinel・Defender XDR）の概要把握'],
+       ['3〜5月',  'PM試験の午前I/II 過去問を軽く開始'],
+     ],
+     note:'低活動期のため無理をしない。週4〜5hを安定して継続することを優先。'
+   }},
+
+  {t:'task', id:'az500-3', lbl:'AZ-500 集中学習・模擬試験 × 2回', s:16, e:17, c:'#1a5276',
+   detail:{
+     phase:'AZ-500集中 → 受験', period:'2027年6〜7月', act:'1.4',
+     items:[
+       ['学習内容', 'セキュリティ監視・ログ分析・インシデント対応設計'],
+       ['模擬試験', '模擬試験2回 → 弱点補強 → <strong>AZ-500 受験・合格</strong>'],
+       ['並行',     'PM午前II演習・論述準備を並行'],
+       ['週目標',   '<strong>14〜18h</strong>'],
+     ]
+   }},
+
+  {t:'ms', id:'az500-ms', lbl:'★ AZ-500 受験（7月）', col:17, c:'#154360',
+   detail:{
+     phase:'AZ-500 受験', period:'2027年7月', act:'1.4',
+     items:[
+       ['前提',       'AZ-104取得済み（Azure管理の基礎知識あり）'],
+       ['出題形式',   '選択・ケーススタディ・ラボ問題（環境操作）'],
+       ['合格基準',   '700点以上（1000点満点）'],
+       ['次のステップ','SC-200 または PM試験へ'],
+     ]
+   }},
+
+  // ════════════════════════════════════════════════
+  // PM
+  // ════════════════════════════════════════════════
+  {t:'sec', lbl:'IPA プロジェクトマネージャ（PM）'},
+
+  {t:'task', id:'pm1', lbl:'PM試験 検討・SC-200との優先度整理', s:10, e:12, c:'#a569bd',
+   detail:{
+     phase:'PM試験 検討・整理', period:'2026年12月〜2027年2月', act:'0.7',
+     items:[
+       ['内容',   'IPAプロジェクトマネージャ試験の受験計画を検討'],
+       ['比較',   'SC-200（Security Operations Analyst）との優先度比較'],
+       ['整理',   '現業のPMプロジェクト実績・エピソードをメモに記録開始'],
+     ],
+     note:'PM試験の論文は「自分の経験」を書く必要があるため、今から業務記録を残すことが合格への近道。'
+   }},
+
+  {t:'task', id:'pm2', lbl:'PM 午前II準備・論文素材収集（業務実績を整理）', s:13, e:15, c:'#8e44ad',
+   detail:{
+     phase:'AZ-500維持・PM準備', period:'2027年3〜5月', act:'0.7',
+     items:[
+       ['PM午前II', '過去問を軽く開始（直近1〜2年分）'],
+       ['論文素材', '担当プロジェクトの概要・課題・対応策をまとめる'],
+       ['AZ-500',  '模擬試験（軽量）継続：週4〜5h'],
+       ['SC-200',  'Microsoft Sentinel・Defender XDR の概要把握'],
+     ]
+   }},
+
+  {t:'task', id:'pm3', lbl:'PM 集中対策（論文テンプレ・過去問5年分）', s:18, e:19, c:'#7d3c98',
+   detail:{
+     phase:'PM試験集中対策', period:'2027年8〜9月', act:'1.4',
+     items:[
+       ['PM午前II', '過去問5年分 → 正答率 <strong>75%以上</strong>'],
+       ['PM午後I',  'プロジェクト計画・リスク管理・品質管理の読解演習'],
+       ['PM午後II', '論文テンプレート作成（経験ベースの実例を整理）'],
+       ['成果物',   '自身のPM経験をまとめた論文素材集'],
+       ['週目標',   '<strong>14〜18h</strong>'],
+     ]
+   }},
+
+  {t:'ms', id:'pm-ms', lbl:'★ PM試験 受験（10月）', col:20, c:'#6c3483',
+   detail:{
+     phase:'PM試験本番 or SC-200', period:'2027年10月（第3日曜）', act:'1.4',
+     items:[
+       ['優先',     '<strong>IPAプロジェクトマネージャ試験 受験（10月第3日曜）</strong>'],
+       ['代替',     'SC-200（Security Operations Analyst）受験'],
+       ['試験形式', '午前I / 午前II / 午後I / 午後II（論文）'],
+       ['合格基準', '各区分60点以上（午後IIは評価A以上）'],
+     ]
+   }},
+];
+
+// ── 詳細マップ構築 ──────────────────────────────────────────────
+const DETAIL_MAP = {};
+for (const r of ROWS) {
+  if (r.id && r.detail) {
+    DETAIL_MAP[r.id] = { title: r.lbl, color: r.c || '#555', ...r.detail };
+  }
+}
+
+// ── ヘルパー ────────────────────────────────────────────────────
+function empBg(idx) {
+  return MONTHS[idx].act === 0.7 ? '#f2f9fd' : '#fefef5';
+}
+
+// ── チャート生成 ─────────────────────────────────────────────────
+function buildChart() {
+  let h = '<table>';
+  h += '<colgroup><col style="width:240px">';
+  for (let i = 0; i < N; i++) h += '<col>';
+  h += '</colgroup><tbody>';
+
+  // 年ヘッダ
+  h += '<tr class="rYr"><td class="lbl"></td>';
+  h += '<td colspan="11">2026年</td><td colspan="10">2027年</td>';
+  h += '</tr>';
+
+  // 月ヘッダ
+  h += '<tr class="rMo"><td class="lbl">フェーズ / 資格</td>';
+  MONTHS.forEach((m, i) => {
+    let cls = m.act === 0.7 ? 'mo07' : 'mo14';
+    if (i === NOW_IDX) cls = 'moNow';
+    h += `<td class="${cls}">${i === NOW_IDX ? '◀ ' : ''}${m.m}</td>`;
+  });
+  h += '</tr>';
+
+  // 行動量係数行
+  h += '<tr class="rAct"><td class="lbl">行動量係数</td>';
+  let i = 0;
+  while (i < N) {
+    const a = MONTHS[i].act;
+    let j = i;
+    while (j < N && MONTHS[j].act === a) j++;
+    h += `<td class="${a === 0.7 ? 'ac07' : 'ac14'}" colspan="${j - i}">${a}</td>`;
+    i = j;
+  }
+  h += '</tr>';
+
+  // 各行
+  for (const row of ROWS) {
+
+    if (row.t === 'sec') {
+      h += `<tr class="rSec"><td class="lbl">${row.lbl}</td>`;
+      for (let k = 0; k < N; k++) h += '<td class="grid"></td>';
+      h += '</tr>';
+
+    } else if (row.t === 'task') {
+      h += `<tr class="rTask"><td class="lbl">${row.lbl}</td>`;
+      for (let k = 0; k < N; k++) {
+        if (k < row.s || k > row.e) {
+          h += `<td style="background:${empBg(k)};border-right:1px solid #eee"></td>`;
+        } else if (k === row.s) {
+          const span = row.e - row.s + 1;
+          const did  = row.id ? `data-id="${row.id}"` : '';
+          h += `<td class="bar-td" colspan="${span}">`;
+          h += `<div class="bar" ${did} style="background:${row.c}">${row.lbl}</div>`;
+          h += '</td>';
+          k = row.e;
+        }
+      }
+      h += '</tr>';
+
+    } else if (row.t === 'ms') {
+      h += `<tr class="rMs"><td class="lbl">${row.lbl}</td>`;
+      for (let k = 0; k < N; k++) {
+        if (k === row.col) {
+          const did = row.id ? `data-id="${row.id}"` : '';
+          h += `<td class="ms-td" style="background:${empBg(k)}">`;
+          h += `<span class="ms-mark" ${did} title="${row.lbl}" style="color:${row.c}">◆</span>`;
+          h += '</td>';
+        } else {
+          h += `<td style="background:${empBg(k)};border-right:1px solid #f0f0f0"></td>`;
+        }
+      }
+      h += '</tr>';
+    }
+  }
+
+  h += '</tbody></table>';
+  return h;
+}
+
+// ── 凡例生成 ──────────────────────────────────────────────────
+function buildLegend() {
+  const items = [
+    {c:'#27ae60', lbl:'Python'},
+    {c:'#e74c3c', lbl:'SC（情報処理安全確保支援士）'},
+    {c:'#2980b9', lbl:'AZ-104（Azure Administrator）'},
+    {c:'#1a5276', lbl:'AZ-500（Azure Security Engineer）'},
+    {c:'#8e44ad', lbl:'PM（プロジェクトマネージャ）'},
+    {c:'#d4e6f1', lbl:'行動量 0.7（低活動期：12〜5月）', bd:'#85c1e9'},
+    {c:'#fef9e7', lbl:'行動量 1.4（高活動期：6〜11月）', bd:'#f9e79f'},
+  ];
+  let h = '<h3>凡例</h3>';
+  h += items.map(d =>
+    `<div class="li"><div class="lb" style="background:${d.c};border:1px solid ${d.bd||d.c}"></div>${d.lbl}</div>`
+  ).join('');
+  return h;
+}
+
+function buildNote() {
+  return `<strong>◀</strong> 現在地（2026年2月）&emsp;
+          <strong>◆</strong> 試験受験日（マイルストーン）&emsp;
+          青背景：低活動期（0.7）&emsp;黄背景：高活動期（1.4）<br>
+          バーまたは◆をクリックすると、その期間の学習内容・目標が確認できます。`;
+}
+
+// ── モーダル制御 ──────────────────────────────────────────────
+function openModal(id) {
+  const d = DETAIL_MAP[id];
+  if (!d) return;
+
+  // ヘッダ
+  const head = document.getElementById('modal-head');
+  head.style.borderLeftColor = d.color;
+  document.getElementById('modal-title').textContent = d.title;
+
+  // メタ情報
+  const actCls   = d.act === '0.7' ? 'meta-07' : 'meta-14';
+  const actLabel  = d.act === '0.7' ? '行動量0.7（週7〜9h）' : '行動量1.4（週14〜18h）';
+  const noteHtml  = d.note ? `<div class="modal-note">💡 ${d.note}</div>` : '';
+
+  const rows = d.items.map(([l, v]) =>
+    `<tr><th>${l}</th><td>${v}</td></tr>`
+  ).join('');
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-meta">
+      <span class="meta-tag">📅 ${d.period}</span>
+      <span class="meta-tag ${actCls}">${actLabel}</span>
+      <span class="meta-tag">📌 ${d.phase}</span>
+    </div>
+    <table class="detail-table">${rows}</table>
+    ${noteHtml}
+  `;
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// ── イベント設定 ──────────────────────────────────────────────
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el && el.dataset.id) openModal(el.dataset.id);
+});
+
+// ── 描画 ─────────────────────────────────────────────────────
+document.getElementById('chart').innerHTML  = buildChart();
+document.getElementById('legend').innerHTML = buildLegend();
+document.getElementById('note').innerHTML   = buildNote();
+</script>
+</body>
+</html>
