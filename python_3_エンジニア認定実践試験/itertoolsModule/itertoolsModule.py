@@ -104,11 +104,29 @@ print("-----------------------------------")
 print()
 print("Creating a product of Infinite Iterators")
 print("------------------------------------")
-product_iterator = itertools.product("ABC", [10, 20])
-print("product_iterator = itertools.product(\"ABC\", [10, 20])")
+product_iterator = itertools.product([10, 20])
+print("product_iterator = itertools.product([10, 20])")
 print("Product Iterator:", product_iterator)  # Output: <itertools.product object at 0x...>
 for item in product_iterator:
-    print(item)  # Output: ('A', '10'), ('A', '20'), ('B', '10'), ('B', '20'), ('C', '10'), ('C', '20')
+    print(item)  # Output: (10,), (20,)
+print("-----------------------------------")
+print()
+print("Creating a product of Infinite Iterators")
+print("------------------------------------")
+product_iterator = itertools.product([10, 20], repeat=2)
+print("product_iterator = itertools.product([10, 20], repeat=2)")
+print("Product Iterator:", product_iterator)  # Output: <itertools.product object at 0x...>
+for item in product_iterator:
+    print(item)  # Output: (10, 10), (10, 20), (20, 10), (20, 20)
+print("-----------------------------------")
+print()
+print("Creating a product of Infinite Iterators")
+print("------------------------------------")
+product_iterator = itertools.product([10, 20], repeat=3)
+print("product_iterator = itertools.product([10, 20], repeat=3)")
+print("Product Iterator:", product_iterator)  # Output: <itertools.product object at 0x...>
+for item in product_iterator:
+    print(item)  # Output: (10, 10, 10), (10, 10, 20), (10, 20, 10), (10, 20, 20), (20, 10, 10), (20, 10, 20), (20, 20, 10), (20, 20, 20)
 print("-----------------------------------")
 print()
 print("Creating a permutations of Infinite Iterators")

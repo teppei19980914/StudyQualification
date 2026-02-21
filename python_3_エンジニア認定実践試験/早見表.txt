@@ -1,0 +1,1500 @@
+Python 3 エンジニア認定実践試験 早見表
+============================================================
+
+
+============================================================
+  collectionsModule/counterModule.py
+============================================================
+
+counterModule.py
+
+counter_numbers = Counter([5, 1, 5, 1, 5, 2])
+Counter Method Used List Of Integers
+-----------------------------------
+Counter Numbers: Counter({5: 3, 1: 2, 2: 1})
+Type of counter_numbers: <class 'collections.Counter'>
+-----------------------------------
+
+Elements Method Used Counter Object
+------------------------------------
+elements = counter_numbers.elements()
+Elements: [5, 5, 5, 1, 1, 2]
+sorted_elements = sorted(list(elements))
+Sorted Elements: [1, 1, 2, 5, 5, 5]
+-----------------------------------
+
+Most Common Method Used Counter Object
+most_common = counter_numbers.most_common()
+Most Common: [(5, 3), (1, 2), (2, 1)]
+most_common_2 = counter_numbers.most_common(2)
+Most Common 2: [(5, 3), (1, 2)]
+-----------------------------------
+
+Subtract Method Used Counter Object
+-----------------------------------
+subtractメソッドは、元のCounterオブジェクトに対して減算をするため、注意が必要です。
+new_counter_numbers = Counter([5, 1, 2])
+substract_counter_numbers = Counter([5, 1, 2])
+substract_counter_numbers.subtract(new_counter_numbers)
+New Counter Numbers After Subtract: Counter({5: 0, 1: 0, 2: 0})
+-----------------------------------
+
+Update Method Used Counter Object
+-----------------------------------
+updateメソッドは、元のCounterオブジェクトに対して加算をするため、注意が必要です。
+update_counter_numbers = Counter([5, 1, 2])
+update_counter_numbers.update(new_counter_numbers)
+New Counter Numbers After Update: Counter({5: 2, 1: 2, 2: 2})
+-----------------------------------
+
+Operand Method Used Counter Object
+-----------------------------------
+Counterオブジェクトは、加算、減算、積、和の演算子をサポートしていますが、これらの演算は新しいCounterオブジェクトを返すため、元のCounterオブジェクトは変更されません。
+counter1 = Counter([5, 1, 2])
+counter2 = Counter([5, 1])
+Counterオブジェクトの加算
+counter_sum = counter1 + counter2
+Counter Sum: Counter({5: 2, 1: 2, 2: 1})
+Counterオブジェクトの減算
+counter_difference = counter1 - counter2
+Counter Difference: Counter({2: 1})
+Counterオブジェクトの減算（Counterオブジェクトなし）
+counter_difference_nocounter = counter1 - Counter([5, 1, 2])
+Counter Difference No Counter: Counter()
+Counterオブジェクトの積
+counter_intersection = counter1 & counter2
+Counter Intersection: Counter({5: 1, 1: 1})
+Counterオブジェクトの和
+counter_union = counter1 | counter2
+Counter Union: Counter({5: 1, 1: 1, 2: 1})
+-----------------------------------
+
+Minus Counter Object
+------------------------------------
+Counterオブジェクトは、負のカウントを持つことができますが、elements()メソッドは、正のカウントのみを返すため、負のカウントは無視されます。
+c = Counter(a=3, b=2, c=-1)
+c: Counter({'a': 3, 'b': 2, 'c': -1})
+list(c.elements()): ['a', 'a', 'a', 'b', 'b']
+------------------------------------
+
+Culculate Counter Object
+------------------------------------
+Counterオブジェクトは、合計、平均、最大値、最小値などの統計情報を簡単に計算することができます。
+a = Counter(a=3, b=2, c=-1)
+b = Counter(a=1, b=1, c=1)
+a + b: Counter({'a': 4, 'b': 3})
+a - b: Counter({'a': 2, 'b': 1})
+a * b
+a / b
+TypeError: unsupported operand type(s) for *: 'Counter' and 'Counter' Counterオブジェクトは、乗算や除算の演算子をサポートしていません。
+a & b: Counter({'a': 1, 'b': 1})
+a | b: Counter({'a': 3, 'b': 2, 'c': 1})
+------------------------------------
+
+Infuluence Counter Object
+------------------------------------
+Counterオブジェクトは、他のCounterオブジェクトや辞書、リストなどのイテラブルなオブジェクトから影響を受けることがあります。
+counter_a = Counter(a=3, b=2, c=-1)
+couter_new = counter_a + Counter(a=1, b=1, c=1)
+Counter New: Counter({'a': 4, 'b': 3})
+Counter_a: Counter({'a': 3, 'b': 2, 'c': -1})
+------------------------------------
+
+
+============================================================
+  collectionsModule/defaultDictKeyModule.py
+============================================================
+
+defaultDictKeyModule.py
+
+Dictionary Key Access
+-----------------------------------
+dictionary = {"a": 1, "b": 2, "c": 3}
+result = dictionary["a"]
+1
+result = dictionary["d"]
+KeyError: 'd' The key does not exist in the dictionary.
+
+defaultdict Key Access
+-----------------------------------
+default_dict = defaultdict(value, spam=100)
+result = default_dict["spam"]
+100
+存在しないキーを指定した場合、defaultdictは自動的にデフォルト値を生成して返します。
+result = default_dict["eggs"]
+0
+default_dict after accessing non-existent key:  defaultdict(<function value at 0x000001899C62F7F0>, {'spam': 100, 'eggs': 0})
+type of default_dict:  <class 'collections.defaultdict'>
+-----------------------------------
+
+Int Defaultdict
+-----------------------------------
+int_default_dict = defaultdict(int)
+int_default_dict["missing_key"] =  0
+int_default_dict["Key"] = 5
+int_default_dict["Key"] =  5
+int_default_dict["Key"] += 1
+int_default_dict["Key"] =  6
+int_default_dict after operations:  defaultdict(<class 'int'>, {'Key': 6})
+type of int_default_dict:  <class 'collections.defaultdict'>
+-----------------------------------
+
+defaultdict with get
+-----------------------------------
+'x' in dd: False
+dict(dd):  {}
+dd.get('x'): None
+dict(dd):  {}
+dd['x']: 0
+dict(dd):  {'x': 0}
+'x' in dd: True
+dict(dd):  {'x': 0}
+-----------------------------------
+
+
+============================================================
+  collectionsModule/namedtupleModule.py
+============================================================
+
+namedtupleModule.py
+
+Creating a namedtuple
+------------------------------------
+Person = namedtuple("Person", ["name", "age"])
+person1 = Person(name="Alice", age=30)
+person1:  Person(name='Alice', age=30)
+person1.name:  Alice
+person1.age:  30
+person1[0]:  Alice
+person1[1]:  30
+------------------------------------
+
+appending to namedtuple
+-------------------------------------
+person2 = Person("Bob", 25)
+person2:  Person(name='Bob', age=25)
+person1.name:  Alice
+person1.age:  30
+person2.name:  Bob
+person2.age:  25
+--------------------------------------
+
+appending to namedtuple too many values
+--------------------------------------
+TypeError: Person.__new__() takes 3 positional arguments but 4 were given Too many values to unpack for the namedtuple.
+
+Updating namedtuple values
+--------------------------------------
+namedtupleはイミュータブルなため、属性を直接変更することはできません。
+person1.age = 40
+AttributeError: can't set attribute Cannot assign to field 'age' of a namedtuple.
+--------------------------------------
+
+_replace method used to update namedtuple values
+--------------------------------------
+updated_person1 = person1._replace(age=40)
+updated_person1:  Person(name='Alice', age=40)
+original person1:  Person(name='Alice', age=30)
+--------------------------------------
+
+asdict method used to convert namedtuple to dictionary
+person1._asdict():  {'name': 'Alice', 'age': 30}
+type of person1._asdict():  <class 'dict'>
+--------------------------------------
+
+field names of namedtuple
+person1._fields:  ('name', 'age')
+type of person1._fields:  <class 'tuple'>
+--------------------------------------
+
+
+============================================================
+  collectionsModule/orderdDictModule.py
+============================================================
+
+orderdDictModule.py
+
+Creating an Dictionary
+------------------------------------
+Pythonの標準の辞書は、Python 3.7以降ではOrderedDictと同様に順序を保持します。
+my_dict = {}
+my_dict["apple"] = 1
+my_dict["banana"] = 2
+my_dict["orange"] = 3
+my_dict:  {'apple': 1, 'banana': 2, 'orange': 3}
+my_dict.keys():  dict_keys(['apple', 'banana', 'orange'])
+my_dict.values():  dict_values([1, 2, 3])
+my_dict.items():  dict_items([('apple', 1), ('banana', 2), ('orange', 3)])
+------------------------------------
+
+Creating an OrderedDict
+------------------------------------
+OrderedDictは、Python 3.7以降の標準の辞書と同様の機能を提供します。
+ordered_dict = OrderedDict()
+ordered_dict["apple"] = 1
+ordered_dict["banana"] = 2
+ordered_dict["orange"] = 3
+ordered_dict:  OrderedDict({'apple': 1, 'banana': 2, 'orange': 3})
+ordered_dict.keys():  odict_keys(['apple', 'banana', 'orange'])
+ordered_dict.values():  odict_values([1, 2, 3])
+ordered_dict.items():  odict_items([('apple', 1), ('banana', 2), ('orange', 3)])
+------------------------------------
+
+Moveing an item to the end of the OrderedDict
+------------------------------------
+OderedDictは、指定したキーをOrderedDictの末尾に移動する「move_to_endメソッド」を提供します。
+ordered_dict.move_to_end("apple")
+ordered_dict:  OrderedDict({'banana': 2, 'orange': 3, 'apple': 1})
+------------------------------------
+
+Difference between Dictionary and OrderedDict
+------------------------------------
+標準の辞書は、順序が異なる場合でも同じキーと値のペアを持つ限り、等しいと見なされますが、OrderedDictは、順序も考慮して等しいと見なされます。
+dict1:  {'apple': 1, 'banana': 2, 'orange': 3}
+dict2:  {'banana': 2, 'orange': 3, 'apple': 1}
+dict1 == dict2:  True
+OrderedDict(dict1):  OrderedDict({'apple': 1, 'banana': 2, 'orange': 3})
+OrderedDict(dict2):  OrderedDict({'banana': 2, 'orange': 3, 'apple': 1})
+OrderedDict(dict1) == OrderedDict(dict2):  False
+------------------------------------
+
+Poping Difference between Dictionary and OrderedDict
+------------------------------------
+OrderedDictは、popitemメソッドで、末尾のアイテムを削除して返すことができますが、標準の辞書は、一律最後の要素を削除して返します。
+ordered_dict:  OrderedDict({'banana': 2, 'orange': 3, 'apple': 1})
+ordered_dict.popitem():  ('apple', 1)
+ordered_dict.popitem(last=False):  ('banana', 2)
+ordered_dict:  OrderedDict({'orange': 3})
+my_dict:  {'apple': 1, 'banana': 2, 'orange': 3}
+my_dict.popitem():  ('orange', 3)
+my_dict:  {'apple': 1, 'banana': 2}
+------------------------------------
+
+
+============================================================
+  copyModeule/copyModule.py
+============================================================
+
+copyModule.py
+
+number_list = [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5]
+Reference Copy of List
+-----------------------------------
+リストの参照コピーは、元のリストと同じオブジェクトを指すため、どちらかを変更すると両方に影響が出ます。
+reference_copy = number_list
+Reference Copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5]
+Type of reference_copy: <class 'list'>
+Modifying reference_copy by appending 6
+Reference Copy after modification: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+Original number_list after modification to reference_copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+-----------------------------------
+
+Reference Copy of int
+-----------------------------------
+整数の参照コピーは、元の整数と同じオブジェクトを指すため、どちらかを変更しても両方に影響が出ません。
+number = 10
+reference_copy_number = number
+Reference Copy of Number: 10
+Type of reference_copy_number: <class 'int'>
+Modifying reference_copy_number by adding 5
+Reference Copy of Number after modification: 15
+Original number after modification to reference_copy_number: 10
+-----------------------------------
+
+Reference Copy of String
+-----------------------------------
+文字列の参照コピーは、元の文字列と同じオブジェクトを指すため、どちらかを変更しても両方に影響が出ません。
+string = "Hello"
+reference_copy_string = string
+Reference Copy of String: Hello
+Type of reference_copy_string: <class 'str'>
+Modifying reference_copy_string by adding " World"
+Reference Copy of String after modification: Hello World
+Original string after modification to reference_copy_string: Hello
+-----------------------------------
+
+Shallow Copy of List
+-----------------------------------
+浅いコピーは、外側のコンテナは別物だが、内部の要素は同じ参照のままです。
+shallow_copy = copy.copy(number_list)
+Shallow Copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+Type of shallow_copy: <class 'list'>
+Modifying shallow_copy by appending 7
+Shallow Copy after modification: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6, 7]
+Original number_list after modification to shallow_copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+-----------------------------------
+
+Deep Copy of List
+-----------------------------------
+リストの深いコピーは、元のリストと異なるオブジェクトを指すため、どちらかを変更しても両方に影響が出ません。
+deep_copy = copy.deepcopy(number_list)
+Deep Copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+Type of deep_copy: <class 'list'>
+Modifying deep_copy by appending 8
+Deep Copy after modification: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6, 8]
+Original number_list after modification to deep_copy: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+-----------------------------------
+
+Reference Copy And Shallow Copy And Deep Copy
+-----------------------------------
+リストの参照コピーは元のリストと同じオブジェクトを指すが、浅いコピー/深いコピーは異なるオブジェクトを指します。
+reference_copy_list = number_list
+shallow_copy_list = copy.copy(number_list)
+deep_copy_list = copy.deepcopy(number_list)
+number_list is reference_copy_list:  True
+number_list is shallow_copy_list:  False
+number_list is deep_copy_list:  False
+------------------------------------
+
+Shallow Copy And Deep Copy
+-----------------------------------
+リストの浅いコピーは元のリストとオブジェクトは異なるが、リスト内の要素は同じオブジェクトを指す。深いコピーはリスト内の要素も異なるオブジェクトを指す。
+number_list[0] is shallow_copy_list[0]:  True
+number_list[2] is deep_copy_list[2]:  False
+---------------------------------
+
+update original list
+number_list after update: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6, 9]
+reference_copy_list after update: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6, 9]
+shallow_copy_list after update: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+deep_copy_list after update: [1, 2, [1, [1, 2], 3], [4, [3, 4], 6], 5, 6]
+---------------------------------
+
+Shallow Copy
+-----------------------------------
+slice = number_list[:]
+list_copy = list(number_list)
+copy_copy = copy.copy(number_list)
+slice is number_list:  False
+list_copy is number_list:  False
+copy_copy is number_list:  False
+True
+True
+True
+-----------------------------------
+
+
+============================================================
+  enumModule/enumModule.py
+============================================================
+
+enumModule.py
+
+Creating an Enum
+------------------------------------
+
+class Nengo(enum.Enum):
+    SHOWA = 1
+    HEISEI = 2
+    REIWA = 3
+
+
+class Weekday(enum.Enum):
+    MONDAY = enum.auto()
+    TUESDAY = enum.auto()
+    WEDNESDAY = enum.auto()
+    THURSDAY = enum.auto()
+    FRIDAY = enum.auto()
+
+
+@enum.unique
+class status(enum.Enum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+
+「@enum.unique」デコレーターは、Enumクラス内のメンバーが一意であることを保証するために使用されます。重複する値がある場合、ValueErrorが発生します。
+
+@enum.unique
+class Color(enum.Enum):
+    RED = 1
+    GREEN = 2
+    BLUE = 2
+    
+ValueError: duplicate values found in <enum 'Color'>: BLUE -> GREEN Duplicate values are not allowed in an Enum decorated with @enum.unique.
+
+Accessing Enum Members
+------------------------------------
+Nengo.SHOWA: Nengo.SHOWA
+Nengo['HEISEI']: Nengo.HEISEI
+Nengo(3) Nengo.REIWA
+weekday.MONDAY.name: MONDAY
+weekday.TUESDAY.value: 2
+list(status): [<status.PENDING: 'pending'>, <status.IN_PROGRESS: 'in_progress'>, <status.COMPLETED: 'completed'>]
+------------------------------------
+
+Comparing Enum Members
+------------------------------------
+Nengo.SHOWA == Nengo.SHOWA: True
+Nengo.SHOWA == Nengo.HEISEI: False
+Nengo.SHOWA is Nengo.SHOWA: True
+Nengo.SHOWA is Nengo.HEISEI: False
+Nengo.SHOWA == 1: False
+Nengo.SHOWA.value == 1: True
+Nengo.SHOWA.value == '1': False
+
+class CopyNengo(enum.Enum):
+    SHOWA = 1
+    HEISEI = 2
+    REIWA = 3
+
+Nengo.SHOWA == CopyNengo.SHOWA: False
+Nengo.SHOWA is CopyNengo.SHOWA: False
+------------------------------------
+
+int Enum
+
+class Color(enum.Enum):
+    RED = 1
+    GREEN = 2
+    BLUE = 3
+    PURPLE = "a"
+
+「Color[5]」は、Color Enumに存在しないキーを指定したため、KeyErrorが発生します。
+Color[5]:
+KeyError: 5 is not a valid key in Color enum
+「Color.BLACK」は、Color Enumに存在しないメンバーを指定したため、AttributeErrorが発生します。
+Color.BLACK
+AttributeError: BLACK is not a valid member of Color enum
+「Color(4)」は、Color Enumに存在しない値を指定したため、ValueErrorが発生します。
+Color(4)
+ValueError: 4 is not a valid value in Color enum
+-------------------------------------
+
+Int Enum
+--------------------------------------
+IntEnumは、Enumのサブクラスで、整数値を持つ列挙型を定義するために使用されます。IntEnumのメンバーは整数値を持ち、整数と比較することができます。
+
+class weekday(enum.IntEnum):
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 5
+    SATURDAY = 6
+    SUNDAY = 7
+
+weekday.MONDAY == 1: True
+weekday.MONDAY is 1: False
+-------------------------------
+
+Str Enum
+--------------------------------------
+StrEnumは、Enumのサブクラスで、文字列値を持つ列挙型を定義するために使用されます。StrEnumのメンバーは文字列値を持ち、文字列と比較することができます。
+
+class Status(enum.StrEnum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+
+Status.PENDING == 'pending': True
+Status.PENDING is 'pending': False
+--------------------------------------
+
+
+============================================================
+  itertoolsModule/itertoolsModule.py
+============================================================
+
+itertoolsModule.py
+
+Creating an Infinite Iterator
+------------------------------------
+iterator = itertools.chain(["A", "B"], "ab", range(3))
+Iterator: <itertools.chain object at 0x00000284FC3FF850>
+A
+B
+a
+b
+0
+1
+2
+Type of iterator: <class 'itertools.chain'>
+-----------------------------------
+
+Creating Grouped Iterator
+------------------------------------
+grouped_iterator = itertools.groupby("AAABBBCCDAA")
+Key: A, Group: ['A', 'A', 'A']
+Key: B, Group: ['B', 'B', 'B']
+Key: C, Group: ['C', 'C']
+Key: D, Group: ['D']
+Key: A, Group: ['A', 'A']
+sorted_grouped_iterator = sorted(grouped_iterator)
+Key: A, Group: ['A', 'A', 'A', 'A', 'A']
+Key: B, Group: ['B', 'B', 'B']
+Key: C, Group: ['C', 'C']
+Key: D, Group: ['D']
+-----------------------------------
+
+Creating a Filtered Iterator
+------------------------------------
+filtered_iterator = itertools.groupby([10, 20, 31, 11, 3, 4], key=lambda x: x % 2 == 0)
+Key: True, Group: [10, 20]
+Key: False, Group: [31, 11, 3]
+Key: True, Group: [4]
+-----------------------------------
+
+Creating a slice of an Infinite Iterator
+------------------------------------
+sliced_iterator = itertools.islice([10, 20, 31, 11, 3, 4], 3)
+Sliced Iterator: <itertools.islice object at 0x00000284FC3DAED0>
+10
+20
+31
+-----------------------------------
+
+Creating a zip of Infinite Iterators
+------------------------------------
+zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
+Zipped Iterator: <zip object at 0x00000284FDF6CAC0>
+('A', 10, 11)
+('B', 20, 3)
+('C', 31, 4)
+-----------------------------------
+
+Creating a zip of Infinite Iterators with strict=True
+------------------------------------
+zip関数に「strict=True」を指定すると、各イテレータの長さが異なる場合にエラーが発生する
+zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
+Zipped Iterator: <zip object at 0x00000284FDF6CB80>
+('A', 10, 11)
+('B', 20, 3)
+('C', 31, 4)
+Error: zip() argument 2 is shorter than argument 1 ValueError: zip() argument 1 is longer than argument 2
+-----------------------------------
+
+Creating a longest zip of Infinite Iterators
+------------------------------------
+zip_longest関数は、fillvalueが指定されていないと、Noneで不足分を埋める
+longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4))
+Longest Zipped Iterator: <itertools.zip_longest object at 0x00000284FC3DAFC0>
+('A', 10, 11)
+('B', 20, 3)
+('C', 31, 4)
+('D', None, None)
+-----------------------------------
+
+Creating a longest zip of Infinite Iterators With fillvalue
+------------------------------------
+zip_longest関数は、最長のイテレータに合わせて、他のイテレータの不足分をfillvalueで埋める
+longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4), fillvalue="-")
+Longest Zipped Iterator: <itertools.zip_longest object at 0x00000284FC3DB010>
+('A', 10, 11)
+('B', 20, 3)
+('C', 31, 4)
+('D', '-', '-')
+-----------------------------------
+
+Creating a product of Infinite Iterators
+------------------------------------
+product_iterator = itertools.product([10, 20])
+Product Iterator: <itertools.product object at 0x00000284FDF6CAC0>
+(10,)
+(20,)
+-----------------------------------
+
+Creating a product of Infinite Iterators
+------------------------------------
+product_iterator = itertools.product([10, 20], repeat=2)
+Product Iterator: <itertools.product object at 0x00000284FDF6CBC0>
+(10, 10)
+(10, 20)
+(20, 10)
+(20, 20)
+-----------------------------------
+
+Creating a product of Infinite Iterators
+------------------------------------
+product_iterator = itertools.product([10, 20], repeat=3)
+Product Iterator: <itertools.product object at 0x00000284FDF6CAC0>
+(10, 10, 10)
+(10, 10, 20)
+(10, 20, 10)
+(10, 20, 20)
+(20, 10, 10)
+(20, 10, 20)
+(20, 20, 10)
+(20, 20, 20)
+-----------------------------------
+
+Creating a permutations of Infinite Iterators
+------------------------------------
+permutations_iterator = itertools.permutations("ABC")
+Permutations Iterator: <itertools.permutations object at 0x00000284FC3DAFC0>
+('A', 'B', 'C')
+('A', 'C', 'B')
+('B', 'A', 'C')
+('B', 'C', 'A')
+('C', 'A', 'B')
+('C', 'B', 'A')
+-----------------------------------
+
+Creating a permutations of Infinite Iterators with r
+------------------------------------
+permutations_iterator = itertools.permutations("ABC", r=2)
+Permutations Iterator: <itertools.permutations object at 0x00000284FC3DB290>
+('A', 'B')
+('A', 'C')
+('B', 'A')
+('B', 'C')
+('C', 'A')
+('C', 'B')
+-----------------------------------
+
+Creating a combinations of Infinite Iterators
+------------------------------------
+combinations_iterator = itertools.combinations("ABC", 2)
+Combinations Iterator: <itertools.combinations object at 0x00000284FC3DAFC0>
+('A', 'B')
+('A', 'C')
+('B', 'C')
+-----------------------------------
+
+Creating a combinations of Infinite Iterators with r
+------------------------------------
+combinations_iterator = itertools.combinations("ABC", r=2)
+Combinations Iterator: <itertools.combinations object at 0x00000284FC3DB2E0>
+('A', 'B')
+('A', 'C')
+('B', 'C')
+-----------------------------------
+
+Creating a combinations with replacement of Infinite Iterators
+------------------------------------
+combinations_with_replacement_iterator = itertools.combinations_with_replacement("ABC", 2)
+Combinations with Replacement Iterator: <itertools.combinations_with_replacement object at 0x00000284FC3DAFC0>
+('A', 'A')
+('A', 'B')
+('A', 'C')
+('B', 'B')
+('B', 'C')
+('C', 'C')
+-----------------------------------
+
+
+============================================================
+  sortModule/operatorModule.py
+============================================================
+
+operatorModule.py
+
+data: List[tuple] = [("apple", 5), ("banana", 2), ("cherry", 8), ("berry", 3), ("apple", 2)]
+Sorted Method Used List Of Tuples
+------------------------------------
+sorted_data = sorted(data)
+sorted_data = [('apple', 2), ('apple', 5), ('banana', 2), ('berry', 3), ('cherry', 8)]
+Type of sorted_data: <class 'list'>
+------------------------------------
+
+Sorted Method Used List Of Tuples With itemgetter
+sorted_by_name = sorted(data, key=itemgetter(0))
+sorted_by_name = [('apple', 5), ('apple', 2), ('banana', 2), ('berry', 3), ('cherry', 8)]
+sorted_by_value = sorted(data, key=itemgetter(1))
+sorted_by_value = [('banana', 2), ('apple', 2), ('berry', 3), ('apple', 5), ('cherry', 8)]
+sorted_by_name_value = sorted(data, key=itemgetter(1, 0))
+sorted_by_name_value = [('apple', 2), ('banana', 2), ('berry', 3), ('apple', 5), ('cherry', 8)]
+------------------------------------
+
+dictionary: dict = {"apple": 5, "banana": 2, "cherry": 8, "berry": 3}
+Sorted Method Used Dictionary With itemgetter
+sorted_dict_by_key = sorted(dictionary.items(), key=itemgetter(0))
+sorted_dict_by_key = [('apple', 5), ('banana', 2), ('berry', 3), ('cherry', 8)]
+sorted_dict_by_value = sorted(dictionary.items(), key=itemgetter(1))
+sorted_dict_by_value = [('banana', 2), ('berry', 3), ('apple', 5), ('cherry', 8)]
+------------------------------------
+
+list_of_dicts: List[dict] = [{"name": "apple", "value": 5}, {"name": "banana", "value": 5}, {"name": "cherry", "value": 8}, {"name": "banana", "value": 3}]
+Sorted Method Used List Of Dictionaries With itemgetter
+sorted_list_of_dicts_by_name = sorted(list_of_dicts, key=itemgetter("name"))
+sorted_list_of_dicts_by_name = [{'name': 'apple', 'value': 5}, {'name': 'banana', 'value': 5}, {'name': 'banana', 'value': 3}, {'name': 'cherry', 'value': 8}]
+sorted_list_of_dicts_by_value = sorted(list_of_dicts, key=itemgetter("value"))
+sorted_list_of_dicts_by_value = [{'name': 'banana', 'value': 3}, {'name': 'apple', 'value': 5}, {'name': 'banana', 'value': 5}, {'name': 'cherry', 'value': 8}]
+sorted_list_of_dicts_by_value_name = sorted(list_of_dicts, key=itemgetter("name", "value"))
+sorted_list_of_dicts_by_value_name = [{'name': 'apple', 'value': 5}, {'name': 'banana', 'value': 3}, {'name': 'banana', 'value': 5}, {'name': 'cherry', 'value': 8}]
+------------------------------------
+
+
+============================================================
+  sortModule/reversedModule.py
+============================================================
+
+reversedModule.py
+
+numbers: List[int] = [5, 2, 9, 1, 5, 6]
+Reversed Method Used List Of Integers
+-----------------------------------
+reversed_numbers = reversed(numbers)
+Reversed Numbers: [6, 5, 1, 9, 2, 5]
+Original Numbers: [5, 2, 9, 1, 5, 6]
+Type of reversed_numbers: <class 'list_reverseiterator'>
+-----------------------------------
+
+strings: List[str] = ["banana", "apple", "cherry"]
+Reversed Method Used List Of Strings
+-----------------------------------
+reversed_strings = reversed(strings)
+Reversed Strings: ['cherry', 'apple', 'banana']
+Original Strings: ['banana', 'apple', 'cherry']
+Type of reversed_strings: <class 'list_reverseiterator'>
+-----------------------------------
+
+strings: List[Union[str, int]] = ["banana", "apple", "cherry", 5, 2, 9, 1, 5, 6]
+Reversed Method Used List Of Strings And Integers
+-----------------------------------
+reversed_stringintegers = reversed(stringintegers)
+Reversed String Integers: [6, 5, 1, 9, 2, 5, 'cherry', 'apple', 'banana']
+Original String Integers: ['banana', 'apple', 'cherry', 5, 2, 9, 1, 5, 6]
+Type of reversed_stringintegers: <class 'list_reverseiterator'>
+-----------------------------------
+
+tuples: tuple = (5, 2, 9, 1, 5, 6)
+Reversed Method Used Tuple Of Integers
+-----------------------------------
+reversed_tuples = reversed(tuples)
+Reversed Tuples: [6, 5, 1, 9, 2, 5]
+Original Tuples: (5, 2, 9, 1, 5, 6)
+Type of reversed_tuples: <class 'reversed'>
+-----------------------------------
+
+dictionary: dict = {"banana": 3, "apple": 2, "cherry": 5}
+Reversed Method Used Dictionary
+-----------------------------------
+reversed_dictionary = reversed(dictionary)
+Reversed Dictionary Keys: ['cherry', 'apple', 'banana']
+Original Dictionary Keys: ['banana', 'apple', 'cherry']
+Type of reversed_dictionary: <class 'dict_reversekeyiterator'>
+-----------------------------------
+
+set_of_numbers: set = {5, 2, 9, 1, 5, 6}
+Reversed Method Used Set Of Integers
+-----------------------------------
+集合は順序がないため、reversed()関数を使用してセットを逆にすることはできません。
+reversed_set_of_numbers = reversed(set_of_numbers)
+Error: 'set' object is not reversible Cannot reverse a set as it is unordered.
+-----------------------------------
+
+string: str = "banana"
+Reversed Method Used String
+-----------------------------------
+reversed_string = reversed(string)
+Reversed String: ananab
+Original String: banana
+Type of reversed_string: <class 'reversed'>
+-----------------------------------
+
+
+============================================================
+  sortModule/sortedModule.py
+============================================================
+
+sortedModule.py
+sorted関数は、元のリストを変更せずに新しいソートされたリストを返します。
+
+numbers: List[int] = [5, 2, 9, 1, 5, 6]
+Sorted Method Used List Of Integers
+-----------------------------------
+sorted_numbers = sorted(numbers)
+Sorted Numbers: [1, 2, 5, 5, 6, 9]
+Original Numbers: [5, 2, 9, 1, 5, 6]
+Type of sorted_numbers: <class 'list'>
+-----------------------------------
+
+Sorted Method Used List Of Integers With Reverse=False
+-----------------------------------
+sorted_numbers_reverse_false = sorted(numbers, reverse=False)
+Sorted Numbers: [1, 2, 5, 5, 6, 9]
+sorted_numbers == sorted_numbers_reverse_false: True
+Type of sorted_numbers_reverse_false: <class 'list'>
+-----------------------------------
+
+Sorted Method Used List Of Integers With Reverse=True
+-----------------------------------
+sorted_numbers_reverse_true = sorted(numbers, reverse=True)
+Sorted Numbers: [9, 6, 5, 5, 2, 1]
+sorted_numbers == sorted_numbers_reverse_true: False
+Type of sorted_numbers_reverse_true: <class 'list'>
+-----------------------------------
+
+strings: List[str] = ["banana", "apple", "cherry"]
+Sorted Method Used List Of Strings
+-----------------------------------
+sorted_strings = sorted(strings)
+Sorted Strings: ['apple', 'banana', 'cherry']
+Original Strings: ['banana', 'apple', 'cherry']
+Type of sorted_strings: <class 'list'>
+-----------------------------------
+
+Sorted Method Used List Of strings With Reverse=False
+-----------------------------------
+sorted_strings_reverse_false = sorted(strings, reverse=False)
+Sorted Strings: ['apple', 'banana', 'cherry']
+sorted_strings == sorted_strings_reverse_false: True
+Type of sorted_strings_reverse_false: <class 'list'>
+-----------------------------------
+
+Sorted Method Used List Of strings With Reverse=True
+-----------------------------------
+sorted_strings_reverse_true = sorted(strings, reverse=True)
+Sorted Strings: ['cherry', 'banana', 'apple']
+sorted_strings == sorted_strings_reverse_true: False
+Type of sorted_strings_reverse_true: <class 'list'>
+-----------------------------------
+
+strings: List[Union[str, int]] = ["banana", "apple", "cherry", 5, 2, 9, 1, 5, 6]
+Sorted Method Used List Of Strings And Integers
+-----------------------------------
+sorted_stringintegers = sorted(stringintegers)
+TypeError: '<' not supported between instances of 'int' and 'str' Cannot compare different types.
+-----------------------------------
+
+tuples: tuple = (5, 2, 9, 1, 5, 6)
+Sorted Method Used Tuple Of Integers
+-----------------------------------
+sorted_tuples = sorted(tuples)
+Sorted Tuple: [1, 2, 5, 5, 6, 9]
+Type of sorted_tuples: <class 'list'>
+-----------------------------------
+
+dictionary: dict = {"banana": 3, "apple": 2, "cherry": 5}
+Sorted Method Used Dictionary
+-----------------------------------
+sorted_dictionary = sorted(dictionary)
+Sorted Dictionary Keys: ['apple', 'banana', 'cherry']
+Type of sorted_dictionary: <class 'list'>
+-----------------------------------
+
+set_of_numbers: set = {5, 2, 9, 1, 5, 6}
+Sorted Method Used Set Of Integers
+-----------------------------------
+sorted_set_of_numbers = sorted(set_of_numbers)
+Sorted Set Of Numbers: [1, 2, 5, 6, 9]
+Type of sorted_set_of_numbers: <class 'list'>
+-----------------------------------
+
+string: str = "banana"
+Sorted Method Used String
+-----------------------------------
+sorted_string = sorted(string)
+Sorted String: ['a', 'a', 'a', 'b', 'n', 'n']
+Type of sorted_string: <class 'list'>
+-----------------------------------
+
+
+============================================================
+  sortModule/sortModule.py
+============================================================
+
+sortModule.py
+sortメソッドは、リストを直接変更するため、元のリストが変更されます。
+
+numbers: List[int] = [5, 2, 9, 1, 5, 6]
+Sort Method Used List Of Integers
+-----------------------------------
+sort_numbers = sort(numbers)
+Sort Numbers: [1, 2, 5, 5, 6, 9]
+Original Numbers: [5, 2, 9, 1, 5, 6]
+Type of sort_numbers: <class 'list'>
+-----------------------------------
+
+Sort Method Used List Of Integers With Reverse=False
+-----------------------------------
+sort_numbers_reverse_false = sort(numbers, reverse=False)
+Sort Numbers: [1, 2, 5, 5, 6, 9]
+Type of sort_numbers_reverse_false: <class 'list'>
+-----------------------------------
+
+Sort Method Used List Of Integers With Reverse=True
+-----------------------------------
+sort_numbers_reverse_true = sort(numbers, reverse=True)
+Sort Numbers: [9, 6, 5, 5, 2, 1]
+Type of sort_numbers_reverse_true: <class 'list'>
+-----------------------------------
+
+strings: List[str] = ["banana", "apple", "cherry"]
+Sort Method Used List Of Strings
+-----------------------------------
+sort_strings = sort(strings)
+Sort Strings: ['apple', 'banana', 'cherry']
+Type of sort_strings: <class 'list'>
+-----------------------------------
+
+Sort Method Used List Of strings With Reverse=False
+-----------------------------------
+sort_strings_reverse_false = sort(strings, reverse=False)
+Sort Strings: ['apple', 'banana', 'cherry']
+Type of sort_strings_reverse_false: <class 'list'>
+-----------------------------------
+
+Sort Method Used List Of strings With Reverse=True
+-----------------------------------
+sort_strings_reverse_true = sort(strings, reverse=True)
+Sort Strings: ['cherry', 'banana', 'apple']
+Type of sort_strings_reverse_true: <class 'list'>
+-----------------------------------
+
+strings: List[Union[str, int]] = ["banana", "apple", "cherry", 5, 2, 9, 1, 5, 6]
+Sort Method Used List Of Strings And Integers
+-----------------------------------
+sortstringintegers = copy.copy(stringintegers)
+sort_stringintegers = sort(stringintegers)
+TypeError: sort() takes no positional arguments Cannot compare different types.
+-----------------------------------
+
+tuples: tuple = (5, 2, 9, 1, 5, 6)
+Sort Method Used Tuple Of Integers
+-----------------------------------
+sort_tuples = sort(tuples)
+Sort Tuple: [1, 2, 5, 5, 6, 9]
+Type of sort_tuples: <class 'list'>
+-----------------------------------
+
+dictionary: dict = {"banana": 3, "apple": 2, "cherry": 5}
+Sort Method Used Dictionary
+-----------------------------------
+sort_dictionary = sort(dictionary)
+Sort Dictionary Keys: ['apple', 'banana', 'cherry']
+Type of sort_dictionary: <class 'list'>
+-----------------------------------
+
+set_of_numbers: set = {5, 2, 9, 1, 5, 6}
+Sort Method Used Set Of Integers
+-----------------------------------
+sort_set_of_numbers = sort(set_of_numbers)
+Sort Set Of Numbers: [1, 2, 5, 6, 9]
+Type of sort_set_of_numbers: <class 'list'>
+-----------------------------------
+
+string: str = "banana"
+Sort Method Used String
+-----------------------------------
+sort_string = sort(string)
+Sort String: ['a', 'a', 'a', 'b', 'n', 'n']
+Type of sort_string: <class 'list'>
+-----------------------------------
+
+
+============================================================
+  timeModule/timeModule.py
+============================================================
+timeModule.py
+
+Time Module
+-----------------------------------
+time = time(14, 30, 45)
+Time: 14:30:45
+Type of time: <class 'datetime.time'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = timemodule.isoformat()
+ISO Format: 14:30:45
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='hours'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='hours')
+ISO Format: 14
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='microseconds'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='microseconds')
+ISO Format: 14:30:45.000000
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='auto'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='auto')
+ISO Format: 14:30:45
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+isoformattime = time.fromisoformat(datetime.now().time().isoformat())
+From ISO Format: 17:30:27.277418
+Type of ISO format time: <class 'datetime.time'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = timemodule.strftime('%H:%M:%S')
+strftime: 14:30:45
+Type of strftime: <class 'str'>
+-----------------------------------
+
+tzname
+-----------------------------------
+tzname = timetimemodule.tzname()
+tzname: None
+Type of tzname: <class 'NoneType'>
+-----------------------------------
+
+zoneinfo
+-----------------------------------
+zoneinfo = time(14, 30, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Datetime with timezone: 14:30:45
+Type of datetime with timezone: <class 'datetime.time'>
+Timezone name: None
+Type of timezone name: <class 'NoneType'>
+-----------------------------------
+
+
+============================================================
+  timeModule/dateModule.py
+============================================================
+dateModule.py
+
+Date Module
+-----------------------------------
+date = date(2025, 2, 14)
+Date: 2025-02-14
+Type of date: <class 'datetime.date'>
+-----------------------------------
+
+Date Module
+-----------------------------------
+f"Year: {date.year}, Month: {date.month}, Day: {date.day}"
+Year: 2025, Month: 2, Day: 14
+Type of year: <class 'int'>, Type of month: <class 'int'>, Type of day: <class 'int'>
+-----------------------------------
+
+Today's Date
+-----------------------------------
+today = date.today()
+Date: 2026-02-21
+Year: 2026, Month: 2, Day: 21
+Type of date: <class 'datetime.date'>
+-----------------------------------
+
+Weekday
+-----------------------------------
+weelday = date.weekday()
+Weekday: 5
+Type of weekday: <class 'int'>
+-----------------------------------
+
+ISO Weekday
+-----------------------------------
+weelday = date.isoweekday()
+Weekday: 5
+Type of weekday: <class 'int'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = date.isoformat()
+ISO Format: 2025-02-14
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+fromisoformatdate = date.fromisoformat('2025-02-14')
+From ISO Format: 2025-02-14
+Type of ISO format date: <class 'datetime.date'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = date.strftime('%Y/%m/%d')
+strftime: 2025/02/14
+Type of strftime: <class 'str'>
+-----------------------------------
+
+f-strings
+-----------------------------------
+f'今日は{today:%Y年%m月%d日です。}'
+今日は2026年02月21日です。
+-----------------------------------
+
+
+============================================================
+  timeModule/datetimeModule.py
+============================================================
+datetimeModule.py
+
+Datetime Module
+-----------------------------------
+datetimemodule = datetime(year=2025, month=2, day=14, hour=14, minute=30, second=45)
+Datetime: 2025-02-14 14:30:45
+Type of datetime: <class 'datetime.datetime'>
+-----------------------------------
+
+Datetime Module Now
+-----------------------------------
+now = datetime.now()
+Now: 2026-02-21 17:30:27.499566
+Type of now: <class 'datetime.datetime'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = datetime.isoformat()
+ISO Format: 2026-02-21T17:30:27.499566
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+fromisoformatdatetime = datetime.fromisoformat(datetimemodule.isoformat())
+From ISO Format: 2025-02-14 14:30:45
+Type of ISO format datetime: <class 'datetime.datetime'>
+-----------------------------------
+
+date
+-----------------------------------
+datepart = datetimemodule.date()
+Date part: 2025-02-14
+Type of date part: <class 'datetime.date'>
+-----------------------------------
+
+time
+-----------------------------------
+timepart = datetimemodule.time()
+Time part: 14:30:45
+Type of time part: <class 'datetime.time'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = datetimemodule.strftime('%Y-%m-%d %H:%M:%S')
+strftime: 2025-02-14 14:30:45
+Type of strftime: <class 'str'>
+-----------------------------------
+
+strptime
+-----------------------------------
+strptime = datetime.strptime('2025-02-14 14:30:45', '%Y-%m-%d %H:%M:%S')
+strptime: 2025-02-14 14:30:45
+Type of strptime: <class 'datetime.datetime'>
+-----------------------------------
+
+tzname
+-----------------------------------
+tzname = datetimemodule.tzname()
+tzname: None
+Type of tzname: <class 'NoneType'>
+-----------------------------------
+
+zoneinfo
+-----------------------------------
+datetime_with_tz = datetime(year=2025, month=2, day=14, hour=14, minute=30, second=45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Datetime with timezone: 2025-02-14 14:30:45+09:00
+Type of datetime with timezone: <class 'datetime.datetime'>
+Timezone name: JST
+Type of timezone name: <class 'str'>
+-----------------------------------
+
+
+============================================================
+  timeModule/culculationTimeModule.py
+============================================================
+culculationTimeModule.py
+
+Time Module Naive Calculation
+-----------------------------------
+timeオブジェクトは、日付やタイムゾーンの情報を持たないため、単純な引き算はできません。
+naivetime1 = time(10, 30, 45)
+Naive Time 1: 10:30:45
+timezone info: None
+naivetime2 = time(2, 30, 45)
+Naive Time 2: 02:30:45
+timezone info: None
+resulttime = naivetime1 - naivetime2
+Error: unsupported operand type(s) for -: 'datetime.time' and 'datetime.time' - Time objects do not support subtraction directly.
+-----------------------------------
+
+Date Module Naive Calculation
+-----------------------------------
+naivedate1 = date(2025, 2, 14)
+Naive Date 1: 2025-02-14
+naivedate2 = date(2025, 2, 7)
+Naive Date 2: 2025-02-07
+resultdate = naivedate1 - naivedate2
+Result Date: 7 days, 0:00:00
+-----------------------------------
+
+Datetime Module Naive Calculation
+-----------------------------------
+naivedatetime1 = datetime(2025, 2, 14, 10, 30, 45)
+Naive Datetime 1: 2025-02-14 10:30:45
+naivedatetime2 = datetime(2025, 2, 7, 2, 15, 45)
+Naive Datetime 2: 2025-02-07 02:15:45
+resultdatetime = naivedatetime1 - naivedatetime2
+Result Datetime: 7 days, 8:15:00
+-----------------------------------
+
+Time Module Aware Calculation
+-----------------------------------
+timeオブジェクトは、日付やタイムゾーンの情報を持たないため、単純な引き算はできません。
+awaretime1 = time(10, 30, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Aware Time 1: 10:30:45
+timezone info: Asia/Tokyo
+awaretime2 = time(2, 30, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Aware Time 2: 02:30:45
+timezone info: Asia/Tokyo
+resultawaretime = awaretime1 - awaretime2
+Error: unsupported operand type(s) for -: 'datetime.time' and 'datetime.time' - Time objects do not support subtraction directly.
+-----------------------------------
+
+Datetime Module Aware Calculation
+-----------------------------------
+awaredatetime1 = datetime(2025, 2, 14, 10, 30, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Aware Datetime 1: 2025-02-14 10:30:45+09:00
+awaredatetime2 = datetime(2025, 2, 7, 2, 15, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Aware Datetime 2: 2025-02-07 02:15:45+09:00
+resultawaredatetime = awaredatetime1 - awaredatetime2
+Result Aware Datetime: 7 days, 8:15:00
+-----------------------------------
+
+Aware vs Naive Datetime Calculation
+-----------------------------------
+awareなdatetimeオブジェクトとnaiveなdatetimeオブジェクトを混ぜて計算することはできません。
+resultmixeddatetime = awaredatetime1 - naivedatetime2
+Error: can't subtract offset-naive and offset-aware datetimes - Cannot mix aware and naive datetime objects.
+
+============================================================
+  timeModule/timedeltaModule.py
+============================================================
+dateModule.py
+
+Date Module
+-----------------------------------
+date = date(2025, 2, 14)
+Date: 2025-02-14
+Type of date: <class 'datetime.date'>
+-----------------------------------
+
+Date Module
+-----------------------------------
+f"Year: {date.year}, Month: {date.month}, Day: {date.day}"
+Year: 2025, Month: 2, Day: 14
+Type of year: <class 'int'>, Type of month: <class 'int'>, Type of day: <class 'int'>
+-----------------------------------
+
+Today's Date
+-----------------------------------
+today = date.today()
+Date: 2026-02-21
+Year: 2026, Month: 2, Day: 21
+Type of date: <class 'datetime.date'>
+-----------------------------------
+
+Weekday
+-----------------------------------
+weelday = date.weekday()
+Weekday: 5
+Type of weekday: <class 'int'>
+-----------------------------------
+
+ISO Weekday
+-----------------------------------
+weelday = date.isoweekday()
+Weekday: 5
+Type of weekday: <class 'int'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = date.isoformat()
+ISO Format: 2025-02-14
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+fromisoformatdate = date.fromisoformat('2025-02-14')
+From ISO Format: 2025-02-14
+Type of ISO format date: <class 'datetime.date'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = date.strftime('%Y/%m/%d')
+strftime: 2025/02/14
+Type of strftime: <class 'str'>
+-----------------------------------
+
+f-strings
+-----------------------------------
+f'今日は{today:%Y年%m月%d日です。}'
+今日は2026年02月21日です。
+-----------------------------------
+
+datetimeModule.py
+
+Datetime Module
+-----------------------------------
+datetimemodule = datetime(year=2025, month=2, day=14, hour=14, minute=30, second=45)
+Datetime: 2025-02-14 14:30:45
+Type of datetime: <class 'datetime.datetime'>
+-----------------------------------
+
+Datetime Module Now
+-----------------------------------
+now = datetime.now()
+Now: 2026-02-21 17:30:27.806568
+Type of now: <class 'datetime.datetime'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = datetime.isoformat()
+ISO Format: 2026-02-21T17:30:27.806568
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+fromisoformatdatetime = datetime.fromisoformat(datetimemodule.isoformat())
+From ISO Format: 2025-02-14 14:30:45
+Type of ISO format datetime: <class 'datetime.datetime'>
+-----------------------------------
+
+date
+-----------------------------------
+datepart = datetimemodule.date()
+Date part: 2025-02-14
+Type of date part: <class 'datetime.date'>
+-----------------------------------
+
+time
+-----------------------------------
+timepart = datetimemodule.time()
+Time part: 14:30:45
+Type of time part: <class 'datetime.time'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = datetimemodule.strftime('%Y-%m-%d %H:%M:%S')
+strftime: 2025-02-14 14:30:45
+Type of strftime: <class 'str'>
+-----------------------------------
+
+strptime
+-----------------------------------
+strptime = datetime.strptime('2025-02-14 14:30:45', '%Y-%m-%d %H:%M:%S')
+strptime: 2025-02-14 14:30:45
+Type of strptime: <class 'datetime.datetime'>
+-----------------------------------
+
+tzname
+-----------------------------------
+tzname = datetimemodule.tzname()
+tzname: None
+Type of tzname: <class 'NoneType'>
+-----------------------------------
+
+zoneinfo
+-----------------------------------
+datetime_with_tz = datetime(year=2025, month=2, day=14, hour=14, minute=30, second=45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Datetime with timezone: 2025-02-14 14:30:45+09:00
+Type of datetime with timezone: <class 'datetime.datetime'>
+Timezone name: JST
+Type of timezone name: <class 'str'>
+-----------------------------------
+
+timeModule.py
+
+Time Module
+-----------------------------------
+time = time(14, 30, 45)
+Time: 14:30:45
+Type of time: <class 'datetime.time'>
+-----------------------------------
+
+ISO Format
+-----------------------------------
+isoformatstr = timemodule.isoformat()
+ISO Format: 14:30:45
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='hours'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='hours')
+ISO Format: 14
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='microseconds'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='microseconds')
+ISO Format: 14:30:45.000000
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+ISO Format timespec='auto'
+-----------------------------------
+isoformatstr = timemodule.isoformat(timespec='auto')
+ISO Format: 14:30:45
+Type of ISO format string: <class 'str'>
+-----------------------------------
+
+From ISO Format
+-----------------------------------
+isoformattime = time.fromisoformat(datetime.now().time().isoformat())
+From ISO Format: 17:30:27.873453
+Type of ISO format time: <class 'datetime.time'>
+-----------------------------------
+
+strftime
+-----------------------------------
+strftime = timemodule.strftime('%H:%M:%S')
+strftime: 14:30:45
+Type of strftime: <class 'str'>
+-----------------------------------
+
+tzname
+-----------------------------------
+tzname = timetimemodule.tzname()
+tzname: None
+Type of tzname: <class 'NoneType'>
+-----------------------------------
+
+zoneinfo
+-----------------------------------
+zoneinfo = time(14, 30, 45, tzinfo=ZoneInfo('Asia/Tokyo'))
+Datetime with timezone: 14:30:45
+Type of datetime with timezone: <class 'datetime.time'>
+Timezone name: None
+Type of timezone name: <class 'NoneType'>
+-----------------------------------
+
+timedeltaModule.py
+
+Timedelta Module
+-----------------------------------
+oneweek = timedelta(days=7)
+One week ago: 7 days, 0:00:00
+Type of one week ago: <class 'datetime.timedelta'>
+-----------------------------------
+
+One Week Later With Date Module
+-----------------------------------
+oneweeklater = dateModule.today + oneweek
+One week later: 2026-02-14
+Type of one week later: <class 'datetime.date'>
+-----------------------------------
+
+One Week Ago With Datetime Module
+-----------------------------------
+oneweekago = datetimeModule.datetimemodule + oneweek
+One week ago: 2025-02-21 14:30:45
+Type of one week ago: <class 'datetime.datetime'>
+-----------------------------------
+
+Seven Hours Later With Time Module
+-----------------------------------
+sevenhourslater = datetime.combine(date.today(), timeModule.fromisoformattime) - timedelta(hours=7)
+Seven hours later: 2026-02-21 10:30:27.873453
+Type of seven hours later: <class 'datetime.datetime'>
+-----------------------------------
+
