@@ -117,8 +117,8 @@ print("copy_copy = copy.copy(number_list)")
 print("slice is number_list: ", slice is number_list)  # Output: False
 print("list_copy is number_list: ", list_copy is number_list)  # Output: False
 print("copy_copy is number_list: ", copy_copy is number_list)  # Output: False
-print(slice[0] is number_list[0])  # Output: True
-print(list_copy[0] is number_list[0])  # Output: True
-print(copy_copy[0] is number_list[0])  # Output: True
+print("slice[0] is number_list[0]: ", slice[0] is number_list[0])  # Output: True
+print("list_copy[0] is number_list[0]: ", list_copy[0] is number_list[0])  # Output: True
+print("copy_copy[0] is number_list[0]: ", copy_copy[0] is number_list[0])  # Output: True
 print("-----------------------------------")
 print()
