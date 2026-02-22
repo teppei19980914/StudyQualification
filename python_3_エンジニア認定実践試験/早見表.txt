@@ -123,7 +123,7 @@ result = default_dict["spam"]
 存在しないキーを指定した場合、defaultdictは自動的にデフォルト値を生成して返します。
 result = default_dict["eggs"]
 0
-default_dict after accessing non-existent key:  defaultdict(<function value at 0x000001FE7D5EF690>, {'spam': 100, 'eggs': 0})
+default_dict after accessing non-existent key:  defaultdict(<function value at 0x000001887B86F690>, {'spam': 100, 'eggs': 0})
 type of default_dict:  <class 'collections.defaultdict'>
 -----------------------------------
 
@@ -447,54 +447,41 @@ Nengo.SHOWA is CopyNengo.SHOWA: False
 ------------------------------------
 
 int Enum
+------------------------------------
 
-class Color(enum.Enum):
-    RED = 1
-    GREEN = 2
-    BLUE = 3
-    PURPLE = "a"
+class IntEnum(enum.IntEnum):
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = "a"
 
-「Color[5]」は、Color Enumに存在しないキーを指定したため、KeyErrorが発生します。
-Color[5]:
-KeyError: 5 is not a valid key in Color enum
-「Color.BLACK」は、Color Enumに存在しないメンバーを指定したため、AttributeErrorが発生します。
-Color.BLACK
-AttributeError: BLACK is not a valid member of Color enum
-「Color(4)」は、Color Enumに存在しない値を指定したため、ValueErrorが発生します。
-Color(4)
-ValueError: 4 is not a valid value in Color enum
--------------------------------------
+ValueError: invalid literal for int() with base 10: 'a' All members of an IntEnum must be integers.
 
-Int Enum
---------------------------------------
-IntEnumは、Enumのサブクラスで、整数値を持つ列挙型を定義するために使用されます。IntEnumのメンバーは整数値を持ち、整数と比較することができます。
+class StrEnum(enum.StrEnum):
+    A = "a"
+    B = "b"
+    C = "c"
+    D = 1
 
-class weekday(enum.IntEnum):
-    MONDAY = 1
-    TUESDAY = 2
-    WEDNESDAY = 3
-    THURSDAY = 4
-    FRIDAY = 5
-    SATURDAY = 6
-    SUNDAY = 7
-
-weekday.MONDAY == 1: True
-weekday.MONDAY is 1: False
--------------------------------
-
-Str Enum
---------------------------------------
-StrEnumは、Enumのサブクラスで、文字列値を持つ列挙型を定義するために使用されます。StrEnumのメンバーは文字列値を持ち、文字列と比較することができます。
-
-class Status(enum.StrEnum):
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-
-Status.PENDING == 'pending': True
-Status.PENDING is 'pending': False
---------------------------------------
-
+
+[エラー]
+C:\Users\SF02512\GitHub\Private\StudyQualification\python_3_エンジニア認定実践試験\enumModule\enumModule.py:185: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
+  print("weekday.MONDAY is 1:", weekday.MONDAY is 1)  # Output: False
+C:\Users\SF02512\GitHub\Private\StudyQualification\python_3_エンジニア認定実践試験\enumModule\enumModule.py:202: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
+  print("Status.PENDING is 'pending':", Status.PENDING is 'pending')  # Output: False
+Traceback (most recent call last):
+  File "C:\Users\SF02512\GitHub\Private\StudyQualification\python_3_エンジニア認定実践試験\enumModule\enumModule.py", line 124, in <module>
+    class StrEnum(enum.StrEnum):
+    ...<3 lines>...
+        D = 1
+  File "C:\Users\SF02512\AppData\Local\Python\pythoncore-3.14-64\Lib\enum.py", line 549, in __new__
+    enum_class = super().__new__(metacls, cls, bases, classdict, **kwds)
+  File "C:\Users\SF02512\AppData\Local\Python\pythoncore-3.14-64\Lib\enum.py", line 255, in __set_name__
+    enum_member = enum_class._new_member_(enum_class, *args)
+  File "C:\Users\SF02512\AppData\Local\Python\pythoncore-3.14-64\Lib\enum.py", line 1353, in __new__
+    raise TypeError('%r is not a string' % (values[0], ))
+TypeError: 1 is not a string
+
 
 ============================================================
   itertoolsModule/itertoolsModule.py
@@ -505,7 +492,7 @@ itertoolsModule.py
 Creating an Infinite Iterator
 ------------------------------------
 iterator = itertools.chain(["A", "B"], "ab", range(3))
-Iterator: <itertools.chain object at 0x000001B25B718D30>
+Iterator: <itertools.chain object at 0x000001CA5A6C8D30>
 A
 B
 a
@@ -542,7 +529,7 @@ Key: True, Group: [4]
 Creating a slice of an Infinite Iterator
 ------------------------------------
 sliced_iterator = itertools.islice([10, 20, 31, 11, 3, 4], 3)
-Sliced Iterator: <itertools.islice object at 0x000001B25B30D0D0>
+Sliced Iterator: <itertools.islice object at 0x000001CA5A2BD0D0>
 10
 20
 31
@@ -551,7 +538,7 @@ Sliced Iterator: <itertools.islice object at 0x000001B25B30D0D0>
 Creating a zip of Infinite Iterators
 ------------------------------------
 zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
-Zipped Iterator: <zip object at 0x000001B25B725C00>
+Zipped Iterator: <zip object at 0x000001CA5A6D5C00>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -561,7 +548,7 @@ Creating a zip of Infinite Iterators with strict=True
 ------------------------------------
 zip関数に「strict=True」を指定すると、各イテレータの長さが異なる場合にエラーが発生する
 zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
-Zipped Iterator: <zip object at 0x000001B25B725CC0>
+Zipped Iterator: <zip object at 0x000001CA5A6D5CC0>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -572,7 +559,7 @@ Creating a longest zip of Infinite Iterators
 ------------------------------------
 zip_longest関数は、fillvalueが指定されていないと、Noneで不足分を埋める
 longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4))
-Longest Zipped Iterator: <itertools.zip_longest object at 0x000001B25B30D490>
+Longest Zipped Iterator: <itertools.zip_longest object at 0x000001CA5A2BD490>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -583,7 +570,7 @@ Creating a longest zip of Infinite Iterators With fillvalue
 ------------------------------------
 zip_longest関数は、最長のイテレータに合わせて、他のイテレータの不足分をfillvalueで埋める
 longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4), fillvalue="-")
-Longest Zipped Iterator: <itertools.zip_longest object at 0x000001B25B728C20>
+Longest Zipped Iterator: <itertools.zip_longest object at 0x000001CA5A6D8C20>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -593,7 +580,7 @@ Longest Zipped Iterator: <itertools.zip_longest object at 0x000001B25B728C20>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20])
-Product Iterator: <itertools.product object at 0x000001B25B725C00>
+Product Iterator: <itertools.product object at 0x000001CA5A6D5C00>
 (10,)
 (20,)
 -----------------------------------
@@ -601,7 +588,7 @@ Product Iterator: <itertools.product object at 0x000001B25B725C00>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20], repeat=2)
-Product Iterator: <itertools.product object at 0x000001B25B725D00>
+Product Iterator: <itertools.product object at 0x000001CA5A6D5D00>
 (10, 10)
 (10, 20)
 (20, 10)
@@ -611,7 +598,7 @@ Product Iterator: <itertools.product object at 0x000001B25B725D00>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20], repeat=3)
-Product Iterator: <itertools.product object at 0x000001B25B725C00>
+Product Iterator: <itertools.product object at 0x000001CA5A6D5C00>
 (10, 10, 10)
 (10, 10, 20)
 (10, 20, 10)
@@ -625,7 +612,7 @@ Product Iterator: <itertools.product object at 0x000001B25B725C00>
 Creating a permutations of Infinite Iterators
 ------------------------------------
 permutations_iterator = itertools.permutations("ABC")
-Permutations Iterator: <itertools.permutations object at 0x000001B25B30D490>
+Permutations Iterator: <itertools.permutations object at 0x000001CA5A2BD490>
 ('A', 'B', 'C')
 ('A', 'C', 'B')
 ('B', 'A', 'C')
@@ -637,7 +624,7 @@ Permutations Iterator: <itertools.permutations object at 0x000001B25B30D490>
 Creating a permutations of Infinite Iterators with r
 ------------------------------------
 permutations_iterator = itertools.permutations("ABC", r=2)
-Permutations Iterator: <itertools.permutations object at 0x000001B25B728D10>
+Permutations Iterator: <itertools.permutations object at 0x000001CA5A6D8D10>
 ('A', 'B')
 ('A', 'C')
 ('B', 'A')
@@ -649,7 +636,7 @@ Permutations Iterator: <itertools.permutations object at 0x000001B25B728D10>
 Creating a combinations of Infinite Iterators
 ------------------------------------
 combinations_iterator = itertools.combinations("ABC", 2)
-Combinations Iterator: <itertools.combinations object at 0x000001B25B30D490>
+Combinations Iterator: <itertools.combinations object at 0x000001CA5A2BD490>
 ('A', 'B')
 ('A', 'C')
 ('B', 'C')
@@ -658,7 +645,7 @@ Combinations Iterator: <itertools.combinations object at 0x000001B25B30D490>
 Creating a combinations of Infinite Iterators with r
 ------------------------------------
 combinations_iterator = itertools.combinations("ABC", r=2)
-Combinations Iterator: <itertools.combinations object at 0x000001B25B728D60>
+Combinations Iterator: <itertools.combinations object at 0x000001CA5A6D8D60>
 ('A', 'B')
 ('A', 'C')
 ('B', 'C')
@@ -667,7 +654,7 @@ Combinations Iterator: <itertools.combinations object at 0x000001B25B728D60>
 Creating a combinations with replacement of Infinite Iterators
 ------------------------------------
 combinations_with_replacement_iterator = itertools.combinations_with_replacement("ABC", 2)
-Combinations with Replacement Iterator: <itertools.combinations_with_replacement object at 0x000001B25B30D490>
+Combinations with Replacement Iterator: <itertools.combinations_with_replacement object at 0x000001CA5A2BD490>
 ('A', 'A')
 ('A', 'B')
 ('A', 'C')
@@ -1021,7 +1008,7 @@ Type of ISO format string: <class 'str'>
 From ISO Format
 -----------------------------------
 isoformattime = time.fromisoformat(datetime.now().time().isoformat())
-From ISO Format: 09:30:10.473282
+From ISO Format: 09:42:03.722796
 Type of ISO format time: <class 'datetime.time'>
 -----------------------------------
 
@@ -1169,14 +1156,14 @@ Type of datetime: <class 'datetime.datetime'>
 Datetime Module Now
 -----------------------------------
 now = datetime.now()
-Now: 2026-02-22 09:30:10.808406
+Now: 2026-02-22 09:42:04.048530
 Type of now: <class 'datetime.datetime'>
 -----------------------------------
 
 ISO Format
 -----------------------------------
 isoformatstr = datetime.isoformat()
-ISO Format: 2026-02-22T09:30:10.808406
+ISO Format: 2026-02-22T09:42:04.048530
 Type of ISO format string: <class 'str'>
 -----------------------------------
 
@@ -1433,14 +1420,14 @@ Type of datetime: <class 'datetime.datetime'>
 Datetime Module Now
 -----------------------------------
 now = datetime.now()
-Now: 2026-02-22 09:30:11.210072
+Now: 2026-02-22 09:42:04.511070
 Type of now: <class 'datetime.datetime'>
 -----------------------------------
 
 ISO Format
 -----------------------------------
 isoformatstr = datetime.isoformat()
-ISO Format: 2026-02-22T09:30:11.210072
+ISO Format: 2026-02-22T09:42:04.511070
 Type of ISO format string: <class 'str'>
 -----------------------------------
 
