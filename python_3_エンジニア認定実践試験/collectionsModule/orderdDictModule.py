@@ -74,5 +74,10 @@ print("ordered_dict: ", ordered_dict)  # Output: OrderedDict([('orange', 3)])
 print("my_dict: ", my_dict)  # Output: {'apple': 1, 'banana': 2, 'orange': 3}
 print("my_dict.popitem(): ", my_dict.popitem())  # Output: ('orange', 3) (順序が保証されないため、どのアイテムが削除されるかは不定)
 print("my_dict: ", my_dict)  # Output: {'apple': 1, 'banana': 2} (順序が保証されないため、どのアイテムが削除されるかは不定)
+print("my_dict.popitem(last=False): ")
+try:
+    print("my_dict.popitem(last=False): ", my_dict.popitem(last=False))  # Output: ('apple', 1) (順序が保証されないため、どのアイテムが削除されるかは不定)
+except TypeError as e:
+    print("Error:", e, "標準の辞書は、popitemメソッドでlast引数をサポートしていません。")
 print("------------------------------------")
 print()

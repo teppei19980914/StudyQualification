@@ -123,7 +123,7 @@ result = default_dict["spam"]
 存在しないキーを指定した場合、defaultdictは自動的にデフォルト値を生成して返します。
 result = default_dict["eggs"]
 0
-default_dict after accessing non-existent key:  defaultdict(<function value at 0x0000021CE74CF690>, {'spam': 100, 'eggs': 0})
+default_dict after accessing non-existent key:  defaultdict(<function value at 0x000001FE7D5EF690>, {'spam': 100, 'eggs': 0})
 type of default_dict:  <class 'collections.defaultdict'>
 -----------------------------------
 
@@ -270,6 +270,8 @@ ordered_dict:  OrderedDict({'banana': 2})
 my_dict:  {'apple': 1, 'banana': 2, 'orange': 3}
 my_dict.popitem():  ('orange', 3)
 my_dict:  {'apple': 1, 'banana': 2}
+my_dict.popitem(last=False): 
+Error: dict.popitem() takes no keyword arguments 標準の辞書は、popitemメソッドでlast引数をサポートしていません。
 ------------------------------------
 
 
@@ -503,7 +505,7 @@ itertoolsModule.py
 Creating an Infinite Iterator
 ------------------------------------
 iterator = itertools.chain(["A", "B"], "ab", range(3))
-Iterator: <itertools.chain object at 0x0000025357DD8D30>
+Iterator: <itertools.chain object at 0x000001B25B718D30>
 A
 B
 a
@@ -540,7 +542,7 @@ Key: True, Group: [4]
 Creating a slice of an Infinite Iterator
 ------------------------------------
 sliced_iterator = itertools.islice([10, 20, 31, 11, 3, 4], 3)
-Sliced Iterator: <itertools.islice object at 0x00000253579CD0D0>
+Sliced Iterator: <itertools.islice object at 0x000001B25B30D0D0>
 10
 20
 31
@@ -549,7 +551,7 @@ Sliced Iterator: <itertools.islice object at 0x00000253579CD0D0>
 Creating a zip of Infinite Iterators
 ------------------------------------
 zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
-Zipped Iterator: <zip object at 0x0000025357DE5C00>
+Zipped Iterator: <zip object at 0x000001B25B725C00>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -559,7 +561,7 @@ Creating a zip of Infinite Iterators with strict=True
 ------------------------------------
 zip関数に「strict=True」を指定すると、各イテレータの長さが異なる場合にエラーが発生する
 zipped_iterator = zip("ABCD", [10, 20, 31], (11, 3, 4))
-Zipped Iterator: <zip object at 0x0000025357DE5CC0>
+Zipped Iterator: <zip object at 0x000001B25B725CC0>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -570,7 +572,7 @@ Creating a longest zip of Infinite Iterators
 ------------------------------------
 zip_longest関数は、fillvalueが指定されていないと、Noneで不足分を埋める
 longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4))
-Longest Zipped Iterator: <itertools.zip_longest object at 0x00000253579CD490>
+Longest Zipped Iterator: <itertools.zip_longest object at 0x000001B25B30D490>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -581,7 +583,7 @@ Creating a longest zip of Infinite Iterators With fillvalue
 ------------------------------------
 zip_longest関数は、最長のイテレータに合わせて、他のイテレータの不足分をfillvalueで埋める
 longest_zipped_iterator = itertools.zip_longest("ABCD", [10, 20, 31], (11, 3, 4), fillvalue="-")
-Longest Zipped Iterator: <itertools.zip_longest object at 0x0000025357DE8C20>
+Longest Zipped Iterator: <itertools.zip_longest object at 0x000001B25B728C20>
 ('A', 10, 11)
 ('B', 20, 3)
 ('C', 31, 4)
@@ -591,7 +593,7 @@ Longest Zipped Iterator: <itertools.zip_longest object at 0x0000025357DE8C20>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20])
-Product Iterator: <itertools.product object at 0x0000025357DE5C00>
+Product Iterator: <itertools.product object at 0x000001B25B725C00>
 (10,)
 (20,)
 -----------------------------------
@@ -599,7 +601,7 @@ Product Iterator: <itertools.product object at 0x0000025357DE5C00>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20], repeat=2)
-Product Iterator: <itertools.product object at 0x0000025357DE5D00>
+Product Iterator: <itertools.product object at 0x000001B25B725D00>
 (10, 10)
 (10, 20)
 (20, 10)
@@ -609,7 +611,7 @@ Product Iterator: <itertools.product object at 0x0000025357DE5D00>
 Creating a product of Infinite Iterators
 ------------------------------------
 product_iterator = itertools.product([10, 20], repeat=3)
-Product Iterator: <itertools.product object at 0x0000025357DE5C00>
+Product Iterator: <itertools.product object at 0x000001B25B725C00>
 (10, 10, 10)
 (10, 10, 20)
 (10, 20, 10)
@@ -623,7 +625,7 @@ Product Iterator: <itertools.product object at 0x0000025357DE5C00>
 Creating a permutations of Infinite Iterators
 ------------------------------------
 permutations_iterator = itertools.permutations("ABC")
-Permutations Iterator: <itertools.permutations object at 0x00000253579CD490>
+Permutations Iterator: <itertools.permutations object at 0x000001B25B30D490>
 ('A', 'B', 'C')
 ('A', 'C', 'B')
 ('B', 'A', 'C')
@@ -635,7 +637,7 @@ Permutations Iterator: <itertools.permutations object at 0x00000253579CD490>
 Creating a permutations of Infinite Iterators with r
 ------------------------------------
 permutations_iterator = itertools.permutations("ABC", r=2)
-Permutations Iterator: <itertools.permutations object at 0x0000025357DE8D10>
+Permutations Iterator: <itertools.permutations object at 0x000001B25B728D10>
 ('A', 'B')
 ('A', 'C')
 ('B', 'A')
@@ -647,7 +649,7 @@ Permutations Iterator: <itertools.permutations object at 0x0000025357DE8D10>
 Creating a combinations of Infinite Iterators
 ------------------------------------
 combinations_iterator = itertools.combinations("ABC", 2)
-Combinations Iterator: <itertools.combinations object at 0x00000253579CD490>
+Combinations Iterator: <itertools.combinations object at 0x000001B25B30D490>
 ('A', 'B')
 ('A', 'C')
 ('B', 'C')
@@ -656,7 +658,7 @@ Combinations Iterator: <itertools.combinations object at 0x00000253579CD490>
 Creating a combinations of Infinite Iterators with r
 ------------------------------------
 combinations_iterator = itertools.combinations("ABC", r=2)
-Combinations Iterator: <itertools.combinations object at 0x0000025357DE8D60>
+Combinations Iterator: <itertools.combinations object at 0x000001B25B728D60>
 ('A', 'B')
 ('A', 'C')
 ('B', 'C')
@@ -665,7 +667,7 @@ Combinations Iterator: <itertools.combinations object at 0x0000025357DE8D60>
 Creating a combinations with replacement of Infinite Iterators
 ------------------------------------
 combinations_with_replacement_iterator = itertools.combinations_with_replacement("ABC", 2)
-Combinations with Replacement Iterator: <itertools.combinations_with_replacement object at 0x00000253579CD490>
+Combinations with Replacement Iterator: <itertools.combinations_with_replacement object at 0x000001B25B30D490>
 ('A', 'A')
 ('A', 'B')
 ('A', 'C')
@@ -1019,7 +1021,7 @@ Type of ISO format string: <class 'str'>
 From ISO Format
 -----------------------------------
 isoformattime = time.fromisoformat(datetime.now().time().isoformat())
-From ISO Format: 09:06:54.221600
+From ISO Format: 09:30:10.473282
 Type of ISO format time: <class 'datetime.time'>
 -----------------------------------
 
@@ -1167,14 +1169,14 @@ Type of datetime: <class 'datetime.datetime'>
 Datetime Module Now
 -----------------------------------
 now = datetime.now()
-Now: 2026-02-22 09:06:54.826868
+Now: 2026-02-22 09:30:10.808406
 Type of now: <class 'datetime.datetime'>
 -----------------------------------
 
 ISO Format
 -----------------------------------
 isoformatstr = datetime.isoformat()
-ISO Format: 2026-02-22T09:06:54.826868
+ISO Format: 2026-02-22T09:30:10.808406
 Type of ISO format string: <class 'str'>
 -----------------------------------
 
@@ -1431,14 +1433,14 @@ Type of datetime: <class 'datetime.datetime'>
 Datetime Module Now
 -----------------------------------
 now = datetime.now()
-Now: 2026-02-22 09:06:55.548817
+Now: 2026-02-22 09:30:11.210072
 Type of now: <class 'datetime.datetime'>
 -----------------------------------
 
 ISO Format
 -----------------------------------
 isoformatstr = datetime.isoformat()
-ISO Format: 2026-02-22T09:06:55.548817
+ISO Format: 2026-02-22T09:30:11.210072
 Type of ISO format string: <class 'str'>
 -----------------------------------
 
