@@ -97,6 +97,37 @@ print("Nengo.SHOWA is CopyNengo.SHOWA:", Nengo.SHOWA is CopyNengo.SHOWA)  # Outp
 print("------------------------------------")
 print()
 print("int Enum")
+print("------------------------------------")
+print("""
+class IntEnum(enum.IntEnum):
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = "a"
+""")
+try:
+    class IntEnum(enum.IntEnum):
+        ONE = 1
+        TWO = 2
+        THREE = 3
+        FOUR = "a"
+except ValueError as e:
+    print(f"ValueError: {e}", "All members of an IntEnum must be integers.")
+print("""
+class StrEnum(enum.StrEnum):
+    A = "a"
+    B = "b"
+    C = "c"
+    D = 1
+""")
+try:
+    class StrEnum(enum.StrEnum):
+        A = "a"
+        B = "b"
+        C = "c"
+        D = 1
+except ValueError as e:
+    print(f"ValueError: {e}", "All members of an StrEnum must be strings.")
 class Color(enum.Enum):
     RED = 1
     GREEN = 2
